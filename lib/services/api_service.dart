@@ -4,9 +4,6 @@ import 'dart:io';
 import '../models/product.dart';
 
 class ApiService {
-  // IMPORTANT: Change this URL based on your setup:
-  // For Android Emulator: http://10.0.2.2:3000/api
-  // For iOS Simulator: http://localhost:3000/api
   static const String baseUrl = 'http://192.168.1.4:3000/api';
 
   // Timeout duration for API calls

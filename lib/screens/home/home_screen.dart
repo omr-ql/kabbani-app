@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/product.dart';
 import '../../widgets/custom_widgets.dart';
@@ -11,7 +12,7 @@ import '../products/category_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? workerName;
-  final String? workerEmail; // ✅ Good - you have this
+  final String? workerEmail;
 
   const HomeScreen({Key? key, this.workerName, this.workerEmail})
       : super(key: key);
@@ -25,12 +26,51 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Product> _recentSearches = [];
 
+  // ✅ Add these variables to store loaded user data
+  String? _currentWorkerName;
+  String? _currentWorkerEmail;
+  bool _isLoadingUserData = true;
+
   @override
   void initState() {
     super.initState();
-    // ✅ Add debug prints to check if email is received
-    print('🔵 HomeScreen - Name: ${widget.workerName}');
-    print('🔵 HomeScreen - Email: ${widget.workerEmail}');
+    _initializeUserData();
+  }
+
+  // ✅ New method to load user data
+  Future<void> _initializeUserData() async {
+    try {
+      // Use passed parameters first, then fallback to SharedPreferences
+      if (widget.workerName != null && widget.workerEmail != null) {
+        setState(() {
+          _currentWorkerName = widget.workerName;
+          _currentWorkerEmail = widget.workerEmail;
+          _isLoadingUserData = false;
+        });
+        print('🔵 Using passed parameters - Name: $_currentWorkerName, Email: $_currentWorkerEmail');
+        return;
+      }
+
+      // Load from SharedPreferences if no parameters passed
+      final prefs = await SharedPreferences.getInstance();
+      final storedName = prefs.getString('workerName');
+      final storedEmail = prefs.getString('workerEmail');
+
+      setState(() {
+        _currentWorkerName = storedName;
+        _currentWorkerEmail = storedEmail;
+        _isLoadingUserData = false;
+      });
+
+      print('🔵 Loaded from SharedPreferences - Name: $_currentWorkerName, Email: $_currentWorkerEmail');
+    } catch (e) {
+      print('❌ Error loading user data: $e');
+      setState(() {
+        _currentWorkerName = widget.workerName ?? 'Worker';
+        _currentWorkerEmail = widget.workerEmail;
+        _isLoadingUserData = false;
+      });
+    }
   }
 
   @override
@@ -39,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // ✅ Dynamic page selection instead of static list
+  // ✅ Updated method to use current user data
   Widget _getSelectedPage() {
     switch (_selectedIndex) {
       case 0:
@@ -50,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return const AdvancedSearchScreen();
       case 3:
         return ProfileScreen(
-          workerName: widget.workerName,
-          workerEmail: widget.workerEmail, // ✅ Pass email here
+          workerName: _currentWorkerName, // ✅ Use loaded data
+          workerEmail: _currentWorkerEmail, // ✅ Use loaded data
         );
       default:
         return _buildHomeContent();
@@ -60,6 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeContent() {
     final l10n = AppLocalizations.of(context)!;
+
+    // ✅ Show loading indicator while loading user data
+    if (_isLoadingUserData) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFFFF4B4B),
+        ),
+      );
+    }
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -80,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: const TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Text(
-                        widget.workerName ?? 'Worker',
+                        _currentWorkerName ?? 'Worker', // ✅ Use loaded data
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -99,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: CircleAvatar(
                           backgroundColor: const Color(0xFFFF4B4B),
                           child: Text(
-                            _getInitials(widget.workerName ?? 'W'),
+                            _getInitials(_currentWorkerName ?? 'W'), // ✅ Use loaded data
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -391,9 +440,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor:
-      Colors.black, // ✅ Fixed - should be black, not transparent
-      body: _getSelectedPage(), // ✅ Use dynamic page selection
+      backgroundColor: Colors.black,
+      body: _getSelectedPage(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -401,8 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         selectedItemColor: const Color(0xFFFF4B4B),
         unselectedItemColor: Colors.grey,
-        backgroundColor:
-        Colors.transparent, // ✅ This is correct for transparent nav
+        backgroundColor: Colors.transparent,
         elevation: 0,
         type: BottomNavigationBarType.fixed,
         items: [

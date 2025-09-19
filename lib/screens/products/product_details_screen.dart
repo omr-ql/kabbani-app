@@ -4,7 +4,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/product.dart';
 import '../../services/api_service.dart';
 import '../home/home_screen.dart';
-
+import 'dart:async';
 class ProductDetailsScreen extends StatefulWidget {
   final String productId;
 
@@ -38,24 +38,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       print('🔍 DEBUG: Token exists: ${token != null}');
       print('🔍 DEBUG: User role from prefs: $userRole');
 
-      if (token != null && userRole == 'admin') {
-        print('🔍 DEBUG: Verifying admin with API...');
-        final isAdminVerified = await ApiService.isAdmin(token);
-        print('🔍 DEBUG: API admin verification result: $isAdminVerified');
+      // Simple role check - no API call needed
+      final isAdmin = (token != null && userRole == 'admin');
 
-        setState(() {
-          _isAdmin = isAdminVerified;
-          _userToken = token;
-        });
+      setState(() {
+        _isAdmin = isAdmin;
+        _userToken = token;
+      });
 
-        print('🔍 DEBUG: Final _isAdmin value: $_isAdmin');
-      } else {
-        print('🔍 DEBUG: Not admin - token exists: ${token != null}, role: $userRole');
-        setState(() {
-          _isAdmin = false;
-          _userToken = null;
-        });
-      }
+      print('🔍 DEBUG: Final _isAdmin value: $_isAdmin');
+
     } catch (e) {
       print('❌ DEBUG: Error checking admin status: $e');
       setState(() {
@@ -64,6 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       });
     }
   }
+
 
   Future<void> _loadProduct() async {
     try {
@@ -236,28 +229,212 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Future<void> _updateQuantity(int newQuantity) async {
-    if (_userToken == null || _product == null) return;
-
-    // Show loading dialog
+  // Beautiful success animation
+  void _showSuccessAnimation(int newQuantity) {
     showDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [Colors.green[800]!, Colors.green[600]!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.green.withOpacity(0.3),
+                blurRadius: 15,
+                offset: Offset(0, 5),
+              ),
+            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(color: Color(0xFFFF4B4B)),
+              // Success icon with animation
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  size: 50,
+                  color: Colors.green[600],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                '✅ Quantity Updated!',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '${_product!.currentQuantity} → $newQuantity units',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
               SizedBox(height: 16),
               Text(
-                'Updating quantity...',
-                style: TextStyle(color: Colors.white),
+                'Inventory has been updated successfully',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.9),
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // Auto-close after 2 seconds
+    Timer(Duration(seconds: 2), () {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+// Beautiful error message
+  void _showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.red[800]!, Colors.red[600]!],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.red.withOpacity(0.3),
+                blurRadius: 15,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 60,
+                color: Colors.white,
+              ),
+              SizedBox(height: 16),
+              Text(
+                '❌ Update Failed',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                message,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.9),
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.red[600],
+                ),
+                child: Text('Try Again'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future _updateQuantity(int newQuantity) async {
+    if (_userToken == null || _product == null) return;
+
+    // Show beautiful loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.grey[900],
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Animated loading icon
+              Container(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFF4B4B),
+                  strokeWidth: 4,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                '🔄 Updating Inventory',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Please wait while we update the quantity...',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -275,51 +452,55 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       Navigator.pop(context); // Close loading dialog
 
       if (result['success']) {
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text('Quantity updated successfully: ${_product!.currentQuantity} → $newQuantity'),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 3),
-          ),
-        );
+        // Show beautiful success message
+        _showSuccessAnimation(newQuantity);
 
         // Reload product to get updated data
         await _loadProduct();
+
       } else {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.error, color: Colors.white),
-                SizedBox(width: 8),
-                Expanded(child: Text(result['message'])),
-              ],
+        _showErrorMessage(result['message']);
+      }
+
+    } catch (e) {
+      Navigator.pop(context); // Close loading dialog
+      _showErrorMessage('Failed to update quantity: $e');
+    }
+  }
+
+  Future<void> _navigateToHome() async {
+    try {
+      // Get user data from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final workerName = prefs.getString('workerName');
+      final workerEmail = prefs.getString('workerEmail');
+
+      print('🔵 Navigating to Home - Name: $workerName, Email: $workerEmail');
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(
+              workerName: workerName, // ✅ Pass the actual user data
+              workerEmail: workerEmail, // ✅ Pass the actual user data
             ),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 4),
           ),
         );
       }
     } catch (e) {
-      Navigator.pop(context); // Close loading dialog
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error updating quantity: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      print('❌ Error navigating to home: $e');
+      // Fallback navigation without user data
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
     }
   }
+
+
 
   // Helper function to get localized category names
   String _getLocalizedCategory(String category, AppLocalizations l10n) {
@@ -806,12 +987,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(width: 15),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
-                  },
+                  onPressed: _navigateToHome,
                   icon: const Icon(Icons.home),
                   label: Text(l10n.home),
                   style: OutlinedButton.styleFrom(
