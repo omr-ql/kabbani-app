@@ -20,6 +20,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-pro
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
+app.use(express.static('public'));
 if (!supabaseUrl || !supabaseKey) {
     console.error('❌ Missing Supabase credentials');
     process.exit(1);
@@ -192,6 +193,11 @@ app.post('/api/auth/login', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
+});
+
+
+app.get('/product', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'product.html'));
 });
 
 // Product Search (Main endpoint for QR scanner)

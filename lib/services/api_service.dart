@@ -4,7 +4,7 @@ import 'dart:io';
 import '../models/product.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.4:3000/api';
+  static const String baseUrl = 'https://kabbani-app-production-e2f2.up.railway.app/api';
 
   // Timeout duration for API calls
   static const Duration timeoutDuration = Duration(seconds: 30);
