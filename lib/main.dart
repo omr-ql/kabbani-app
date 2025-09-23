@@ -35,16 +35,37 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+
+          // Put Arabic first as the default supported locale
           supportedLocales: const [
+            Locale('ar'), // Arabic - now first/default
             Locale('en'), // English
-            Locale('ar'), // Arabic
           ],
+
+          // Add RTL support for Arabic
+          builder: (context, child) {
+            // Determine text direction based on locale
+            final textDirection = languageProvider.locale.languageCode == 'ar'
+                ? TextDirection.rtl
+                : TextDirection.ltr;
+
+            return Directionality(
+              textDirection: textDirection,
+              child: child!,
+            );
+          },
 
           theme: ThemeData(
             primarySwatch: Colors.red,
             canvasColor: Colors.transparent,
             useMaterial3: true,
+
+            // Add font family support for Arabic if needed
+            fontFamily: languageProvider.locale.languageCode == 'ar'
+                ? 'NotoSansArabic'  // You can add Arabic fonts to pubspec.yaml
+                : null,
           ),
+
           debugShowCheckedModeBanner: false,
           home: const SplashAuthScreen(),
           routes: {

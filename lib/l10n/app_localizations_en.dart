@@ -248,4 +248,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get editQuantity => 'Edit Quantity';
+
+  @override
+  String get editQuantityAdmin => 'Edit Quantity (Admin)';
+
+  @override
+  String get newQuantity => 'New Quantity';
+
+  @override
+  String get current => 'Current';
+
+  @override
+  String get units => 'units';
+
+  @override
+  String get enterQuantityHint => 'Enter quantity (0 or more)';
+
+  @override
+  String get quantityUpdateHelper =>
+      'Enter the new quantity for this product. This will update the inventory immediately.';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get enterValidQuantity => 'Please enter a valid quantity (0 or more)';
+
+  @override
+  String get quantityUpdated => '✅ Quantity Updated!';
+
+  @override
+  String get inventoryUpdatedSuccess =>
+      'Inventory has been updated successfully';
+
+  @override
+  String get updateFailed => '❌ Update Failed';
+
+  @override
+  String get tryAgain => 'Try Again';
+
+  @override
+  String get updatingInventory => '🔄 Updating Inventory';
+
+  @override
+  String get pleaseWaitUpdating =>
+      'Please wait while we update the quantity...';
+
+  @override
+  String get failedToUpdate => 'Failed to update quantity';
+
+  @override
+  String get warehouse => 'Warehouse';
+
+  @override
+  String get warehouseInformation => 'Warehouse Information';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get sector => 'Sector';
+
+  @override
+  String get stock => 'Stock';
+
+  @override
+  String get off => 'OFF';
 }

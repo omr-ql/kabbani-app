@@ -577,6 +577,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @editQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Quantity'**
+  String get editQuantity;
+
+  /// No description provided for @editQuantityAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Quantity (Admin)'**
+  String get editQuantityAdmin;
+
+  /// No description provided for @newQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'New Quantity'**
+  String get newQuantity;
+
+  /// No description provided for @current.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get current;
+
+  /// No description provided for @units.
+  ///
+  /// In en, this message translates to:
+  /// **'units'**
+  String get units;
+
+  /// No description provided for @enterQuantityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter quantity (0 or more)'**
+  String get enterQuantityHint;
+
+  /// No description provided for @quantityUpdateHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the new quantity for this product. This will update the inventory immediately.'**
+  String get quantityUpdateHelper;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @enterValidQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid quantity (0 or more)'**
+  String get enterValidQuantity;
+
+  /// No description provided for @quantityUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'✅ Quantity Updated!'**
+  String get quantityUpdated;
+
+  /// No description provided for @inventoryUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory has been updated successfully'**
+  String get inventoryUpdatedSuccess;
+
+  /// No description provided for @updateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'❌ Update Failed'**
+  String get updateFailed;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// No description provided for @updatingInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'🔄 Updating Inventory'**
+  String get updatingInventory;
+
+  /// No description provided for @pleaseWaitUpdating.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while we update the quantity...'**
+  String get pleaseWaitUpdating;
+
+  /// No description provided for @failedToUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update quantity'**
+  String get failedToUpdate;
+
+  /// No description provided for @warehouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse'**
+  String get warehouse;
+
+  /// No description provided for @warehouseInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse Information'**
+  String get warehouseInformation;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @sector.
+  ///
+  /// In en, this message translates to:
+  /// **'Sector'**
+  String get sector;
+
+  /// No description provided for @stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get stock;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'OFF'**
+  String get off;
 }
 
 class _AppLocalizationsDelegate

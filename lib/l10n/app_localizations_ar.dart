@@ -9,10 +9,10 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get welcomeBack => 'اهلين فيك';
+  String get welcomeBack => 'اهلا و سهلا';
 
   @override
-  String get signInToAccount => 'سجل الدحول من هون';
+  String get signInToAccount => 'سجل الدحول من هنا';
 
   @override
   String get emailAddress => 'البريد الإلكتروني';
@@ -27,16 +27,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signIn => 'تسجيل الدخول';
 
   @override
-  String get signUp => 'سوي لك حساب معلم';
+  String get signUp => 'قم بانشاء حساب';
 
   @override
-  String get dontHaveAccount => 'ما عندك حساب ؟ ';
+  String get dontHaveAccount => 'ليس لديك حساب ؟';
 
   @override
   String get createAccount => 'انشاء حساب';
 
   @override
-  String get joinToday => 'اعمل حساب و املى البيانات ';
+  String get joinToday => 'اعمل حساب و املئ البيانات ';
 
   @override
   String get fullName => 'الاسم الكامل';
@@ -87,7 +87,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get initializing => 'جاري تشغيل التطبيق...';
 
   @override
-  String get welcomeBackWorker => 'اهلين فيك يا،';
+  String get welcomeBackWorker => 'اهلا فيك يا،';
 
   @override
   String get searchHint => 'البحث في المنتجات بالاسم، الرقم، أو النوع...';
@@ -222,13 +222,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get scanProductCode => 'امسح رمز المنتج';
 
   @override
-  String get cameraPermissionRequired => 'معلم بدنا اذن الكاميرا لو سمحت';
+  String get cameraPermissionRequired => 'نريد اذن الكاميرا لو سمحت';
 
   @override
   String get grantPermission => 'منح الإذن';
 
   @override
-  String get placeBarcodeInBox => 'خلي الرمز واضح داخل المربع';
+  String get placeBarcodeInBox => 'ضع الرمز واضح داخل المربع';
 
   @override
   String get codeScannedSuccessfully => 'تم مسح الرمز بنجاح!';
@@ -246,5 +246,72 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tryTheseIDs => 'جرب هذه الأرقام لاختبار الاداء:';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get editQuantity => 'تعديل الكميه';
+
+  @override
+  String get editQuantityAdmin => 'تعديل الكمية (ادمن)';
+
+  @override
+  String get newQuantity => 'الكمية الجديدة';
+
+  @override
+  String get current => 'الحالية';
+
+  @override
+  String get units => 'وحدة';
+
+  @override
+  String get enterQuantityHint => 'ادخل الكميه الحاليه :';
+
+  @override
+  String get quantityUpdateHelper =>
+      'أدخل الكمية الجديدة لهذا المنتج. سيؤدي هذا إلى تحديث المخزون فوراً.';
+
+  @override
+  String get update => 'تحديث';
+
+  @override
+  String get enterValidQuantity => 'يرجى إدخال كمية صحيحة (0 أو أكثر)';
+
+  @override
+  String get quantityUpdated => '✅ تم تحديث الكمية!';
+
+  @override
+  String get inventoryUpdatedSuccess => 'تم تحديث المخزون بنجاح';
+
+  @override
+  String get updateFailed => '❌ فشل التحديث';
+
+  @override
+  String get tryAgain => 'حاول مرة أخرى';
+
+  @override
+  String get updatingInventory => '🔄 جاري تحديث المخزون';
+
+  @override
+  String get pleaseWaitUpdating => 'يرجى الانتظار بينما نقوم بتحديث الكمية...';
+
+  @override
+  String get failedToUpdate => 'فشل في تحديث الكمية';
+
+  @override
+  String get warehouse => 'المخزن';
+
+  @override
+  String get warehouseInformation => 'معلومات المخزن';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get sector => 'القطاع';
+
+  @override
+  String get stock => 'المخزون';
+
+  @override
+  String get off => 'خصم';
 }
