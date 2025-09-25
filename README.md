@@ -5,7 +5,6 @@ A professional Flutter application designed for Home Furnishing workers to effic
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
 ## 📱 Features
 
@@ -49,7 +48,6 @@ A professional Flutter application designed for Home Furnishing workers to effic
 - **Flutter SDK** (3.0.0 or higher)
 - **Dart SDK** (2.17.0 or higher)
 - **Node.js** (16.0.0 or higher)
-- **MongoDB** (5.0.0 or higher)
 - **Android Studio** or **VS Code** with Flutter extensions
 
 ### 📦 Installation
@@ -57,8 +55,8 @@ A professional Flutter application designed for Home Furnishing workers to effic
 1. **Clone the repository**
 ```
 
-git clone https://github.com/yourusername/home-furnishing-app.git
-cd home-furnishing-app
+git clone https://github.com/omrql/kabbani-app.git
+cd kabbani-app
 
 ```
 
@@ -257,24 +255,6 @@ We welcome contributions to improve the Home Furnishing App! Here's how you can 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-```
-
-MIT License
-
-Copyright (c) 2025 Home Furnishing App
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-```
-
 ## 📞 Support
 
 If you encounter any issues or have questions:
@@ -286,7 +266,6 @@ If you encounter any issues or have questions:
 ## 🙏 Acknowledgments
 
 - **Flutter Team** for the amazing framework
-- **MongoDB** for reliable database solutions
 - **Node.js Community** for excellent backend tools
 - **Material Design** for UI/UX inspiration
 - **Contributors** who helped improve this project
@@ -296,5 +275,5 @@ If you encounter any issues or have questions:
 - **Lines of Code**: ~5,000+
 - **Development Time**: 3 weeks
 - **Supported Platforms**: Android, iOS
-- **Backend**: Node.js + Express + MongoDB
+- **Backend**: Node.js + Express
 - **Frontend**: Flutter + Dart
