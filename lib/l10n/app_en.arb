@@ -101,5 +101,20 @@
   "category": "Category",
   "sector": "Sector",
   "stock": "Stock",
-  "off": "OFF"
+  "off": "OFF",
+  "searchingForProduct": "Searching for product...",
+  "enterProductIdToSearch": "Enter a product ID to search",
+  "scanBarcodeOrType": "Scan a barcode or type the product ID manually",
+  "enterProductIdInstruction": "Enter a product ID or scan a barcode to view detailed product information",
+  "currentPrice": "Current Price",
+  "originalPrice": "Original Price",
+  "notSpecified": "Not specified",
+  "discountAmount": "Discount Amount",
+  "discountPercentage": "Discount Percentage",
+  "stockQuantity": "Stock Quantity",
+  "totalValue": "Total Value",
+  "warehouseAndInventory": "Warehouse & Inventory",
+  "availableQuantity": "Available Quantity",
+  "inventoryValue": "Inventory Value",
+  "fullDetails": "Full Details"
 }

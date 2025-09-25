@@ -23,7 +23,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
   String _errorMessage = '';
   String _selectedCategory = 'All';
   String _sortBy = 'name';
-  List<String> _searchHistory = ['طقم جلوس', 'ميموري', 'صدفية', '250-10'];
 
   @override
   void initState() {
@@ -85,16 +84,12 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
       setState(() {
         _searchResults = results;
         _isLoading = false;
-
-        // Add to search history
-        final trimmedQuery = query.trim();
-        if (trimmedQuery.isNotEmpty && !_searchHistory.contains(trimmedQuery)) {
-          _searchHistory.insert(0, trimmedQuery);
-          if (_searchHistory.length > 10) {
-            _searchHistory.removeLast();
-          }
-        }
       });
+
+      // Call the callback if provided
+      if (widget.onSearchPerformed != null && results.isNotEmpty) {
+        widget.onSearchPerformed!(results.first);
+      }
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -139,9 +134,15 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
         products.sort((a, b) => b.effectivePrice.compareTo(a.effectivePrice));
         break;
       case 'discount':
-        products.sort((a, b) => b.discountPercentage.compareTo(a.discountPercentage));
+        products.sort((a, b) => _getDiscountPercentage(b).compareTo(_getDiscountPercentage(a)));
         break;
     }
+  }
+
+  // Helper method to get discount percentage from product
+  double _getDiscountPercentage(Product product) {
+    if (!product.hasDiscount) return 0.0;
+    return product.discount; // Use the actual discount value from the Product model
   }
 
   String _getLocalizedCategory(String category, AppLocalizations l10n) {
@@ -161,6 +162,15 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
     }
   }
 
+  void _navigateToProductDetails(Product product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductDetailsScreen(productId: product.id),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -173,10 +183,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
         title: Text(
           l10n.searchProducts,
           style: const TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -195,10 +201,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
         children: [
           // Search Bar Section
           _buildSearchSection(l10n),
-
-          // Search History Section
-          if (_searchController.text.isEmpty && _searchHistory.isNotEmpty)
-            _buildSearchHistorySection(l10n),
 
           // Results Count and Sort Section
           if (_searchController.text.isNotEmpty || _selectedCategory != 'All')
@@ -228,6 +230,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
             child: TextField(
               controller: _searchController,
               style: const TextStyle(color: Colors.white),
+              textInputAction: TextInputAction.search,
               onChanged: (value) {
                 if (value.isEmpty) {
                   _filterResults();
@@ -243,7 +246,9 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                   icon: const Icon(Icons.clear, color: Colors.grey),
                   onPressed: () {
                     _searchController.clear();
-                    _filterResults();
+                    setState(() {
+                      _searchResults = _allProducts;
+                    });
                   },
                 )
                     : null,
@@ -265,61 +270,6 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                 }).toList(),
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchHistorySection(AppLocalizations l10n) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                l10n.recentSearches,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _searchHistory.clear();
-                  });
-                },
-                child: Text(
-                  l10n.clear,
-                  style: const TextStyle(color: Color(0xFFFF4B4B)),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 10,
-            children: _searchHistory.map((query) => GestureDetector(
-              onTap: () {
-                _searchController.text = query;
-                _performSearch(query);
-              },
-              child: Chip(
-                label: Text(query, style: const TextStyle(color: Colors.white)),
-                backgroundColor: Colors.grey[800],
-                deleteIcon: const Icon(Icons.close, size: 18, color: Colors.grey),
-                onDeleted: () {
-                  setState(() {
-                    _searchHistory.remove(query);
-                  });
-                },
-              ),
-            )).toList(),
-          ),
         ],
       ),
     );
@@ -384,7 +334,17 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
   Widget _buildMainContent(AppLocalizations l10n) {
     if (_isLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: Color(0xFFFF4B4B)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: Color(0xFFFF4B4B)),
+            SizedBox(height: 20),
+            Text(
+              'Loading products...',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
       );
     }
 
@@ -407,6 +367,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
               label: const Text('Retry'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFFF4B4B),
+                foregroundColor: Colors.white,
               ),
             ),
           ],
@@ -486,16 +447,10 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
 
   Widget _buildProductCard(Product product) {
     final l10n = AppLocalizations.of(context)!;
+    final discountPercentage = _getDiscountPercentage(product);
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(productId: product.id),
-          ),
-        );
-      },
+      onTap: () => _navigateToProductDetails(product),
       child: Container(
         margin: const EdgeInsets.only(bottom: 15),
         padding: const EdgeInsets.all(16),
@@ -588,7 +543,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                             ),
                         ],
                       ),
-                      if (product.hasDiscount)
+                      if (product.hasDiscount && discountPercentage > 0)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
@@ -596,7 +551,7 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            '-${product.discountPercentage.toStringAsFixed(0)}%',
+                            '-${discountPercentage.toStringAsFixed(0)}%',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -651,143 +606,159 @@ class _AdvancedSearchScreenState extends State<AdvancedSearchScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
+      isScrollControlled: true,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.8,
+              ),
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            l10n.filterSort,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setModalState(() {
+                                _selectedCategory = 'All';
+                                _sortBy = 'name';
+                              });
+                              _filterResults();
+                            },
+                            child: Text(
+                              l10n.reset,
+                              style: const TextStyle(color: Color(0xFFFF4B4B)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Category Section
                       Text(
-                        l10n.filterSort,
+                        'Category',
                         style: const TextStyle(
-                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          setModalState(() {
-                            _selectedCategory = 'All';
-                            _sortBy = 'name';
-                          });
-                          _filterResults();
-                        },
-                        child: Text(
-                          l10n.reset,
-                          style: const TextStyle(color: Color(0xFFFF4B4B)),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 5,
+                        children: _availableCategories.map((category) {
+                          final localizedName = _getLocalizedCategory(category, l10n);
+                          return ChoiceChip(
+                            label: Text(localizedName, style: const TextStyle(color: Colors.white)),
+                            selected: _selectedCategory == category,
+                            backgroundColor: Colors.grey[800],
+                            selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
+                            onSelected: (selected) {
+                              setModalState(() => _selectedCategory = category);
+                            },
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Sort Section
+                      Text(
+                        l10n.sortBy,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 5,
+                        children: [
+                          ChoiceChip(
+                            label: Text(l10n.sortName, style: const TextStyle(color: Colors.white)),
+                            selected: _sortBy == 'name',
+                            backgroundColor: Colors.grey[800],
+                            selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
+                            onSelected: (selected) {
+                              setModalState(() => _sortBy = 'name');
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text(l10n.sortPriceLow, style: const TextStyle(color: Colors.white)),
+                            selected: _sortBy == 'price_low',
+                            backgroundColor: Colors.grey[800],
+                            selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
+                            onSelected: (selected) {
+                              setModalState(() => _sortBy = 'price_low');
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text(l10n.sortPriceHigh, style: const TextStyle(color: Colors.white)),
+                            selected: _sortBy == 'price_high',
+                            backgroundColor: Colors.grey[800],
+                            selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
+                            onSelected: (selected) {
+                              setModalState(() => _sortBy = 'price_high');
+                            },
+                          ),
+                          ChoiceChip(
+                            label: Text(l10n.sortDiscount, style: const TextStyle(color: Colors.white)),
+                            selected: _sortBy == 'discount',
+                            backgroundColor: Colors.grey[800],
+                            selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
+                            onSelected: (selected) {
+                              setModalState(() => _sortBy = 'discount');
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+
+                      // Apply Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _filterResults();
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF4B4B),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            l10n.applyFilters,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-
-                  // Category Section
-                  Text(
-                    'Category',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 10,
-                    children: _availableCategories.map((category) {
-                      final localizedName = _getLocalizedCategory(category, l10n);
-                      return ChoiceChip(
-                        label: Text(localizedName, style: const TextStyle(color: Colors.white)),
-                        selected: _selectedCategory == category,
-                        backgroundColor: Colors.grey[800],
-                        selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
-                        onSelected: (selected) {
-                          setModalState(() => _selectedCategory = category);
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Sort Section
-                  Text(
-                    l10n.sortBy,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 10,
-                    children: [
-                      ChoiceChip(
-                        label: Text(l10n.sortName, style: const TextStyle(color: Colors.white)),
-                        selected: _sortBy == 'name',
-                        backgroundColor: Colors.grey[800],
-                        selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
-                        onSelected: (selected) {
-                          setModalState(() => _sortBy = 'name');
-                        },
-                      ),
-                      ChoiceChip(
-                        label: Text(l10n.sortPriceLow, style: const TextStyle(color: Colors.white)),
-                        selected: _sortBy == 'price_low',
-                        backgroundColor: Colors.grey[800],
-                        selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
-                        onSelected: (selected) {
-                          setModalState(() => _sortBy = 'price_low');
-                        },
-                      ),
-                      ChoiceChip(
-                        label: Text(l10n.sortPriceHigh, style: const TextStyle(color: Colors.white)),
-                        selected: _sortBy == 'price_high',
-                        backgroundColor: Colors.grey[800],
-                        selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
-                        onSelected: (selected) {
-                          setModalState(() => _sortBy = 'price_high');
-                        },
-                      ),
-                      ChoiceChip(
-                        label: Text(l10n.sortDiscount, style: const TextStyle(color: Colors.white)),
-                        selected: _sortBy == 'discount',
-                        backgroundColor: Colors.grey[800],
-                        selectedColor: const Color(0xFFFF4B4B).withOpacity(0.3),
-                        onSelected: (selected) {
-                          setModalState(() => _sortBy = 'discount');
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-
-                  // Apply Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _filterResults();
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF4B4B),
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: Text(
-                        l10n.applyFilters,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             );
           },

@@ -706,7 +706,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Stock Section with Admin Edit Button
+                // Stock Section with Admin Edit Button (REMOVED STOCK STATUS BADGE)
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -717,39 +717,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.inventory,
-                                color: _getStockStatusColor(),
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                '${l10n.stock}: ${_product!.currentQuantity} ${l10n.units}', // Localized
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
+                          Icon(
+                            Icons.inventory,
+                            color: _getStockStatusColor(),
+                            size: 20,
                           ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: _getStockStatusColor(),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              _product!.stockStatus,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${l10n.stock}: ${_product!.currentQuantity} ${l10n.units}', // Localized
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
                         ],

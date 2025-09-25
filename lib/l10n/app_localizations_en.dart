@@ -317,4 +317,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get off => 'OFF';
+
+  @override
+  String get searchingForProduct => 'Searching for product...';
+
+  @override
+  String get enterProductIdToSearch => 'Enter a product ID to search';
+
+  @override
+  String get scanBarcodeOrType =>
+      'Scan a barcode or type the product ID manually';
+
+  @override
+  String get enterProductIdInstruction =>
+      'Enter a product ID or scan a barcode to view detailed product information';
+
+  @override
+  String get currentPrice => 'Current Price';
+
+  @override
+  String get originalPrice => 'Original Price';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get discountAmount => 'Discount Amount';
+
+  @override
+  String get discountPercentage => 'Discount Percentage';
+
+  @override
+  String get stockQuantity => 'Stock Quantity';
+
+  @override
+  String get totalValue => 'Total Value';
+
+  @override
+  String get warehouseAndInventory => 'Warehouse & Inventory';
+
+  @override
+  String get availableQuantity => 'Available Quantity';
+
+  @override
+  String get inventoryValue => 'Inventory Value';
+
+  @override
+  String get fullDetails => 'Full Details';
 }

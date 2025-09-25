@@ -709,6 +709,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OFF'**
   String get off;
+
+  /// No description provided for @searchingForProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching for product...'**
+  String get searchingForProduct;
+
+  /// No description provided for @enterProductIdToSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a product ID to search'**
+  String get enterProductIdToSearch;
+
+  /// No description provided for @scanBarcodeOrType.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan a barcode or type the product ID manually'**
+  String get scanBarcodeOrType;
+
+  /// No description provided for @enterProductIdInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a product ID or scan a barcode to view detailed product information'**
+  String get enterProductIdInstruction;
+
+  /// No description provided for @currentPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Price'**
+  String get currentPrice;
+
+  /// No description provided for @originalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Original Price'**
+  String get originalPrice;
+
+  /// No description provided for @notSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get notSpecified;
+
+  /// No description provided for @discountAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount Amount'**
+  String get discountAmount;
+
+  /// No description provided for @discountPercentage.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount Percentage'**
+  String get discountPercentage;
+
+  /// No description provided for @stockQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock Quantity'**
+  String get stockQuantity;
+
+  /// No description provided for @totalValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Value'**
+  String get totalValue;
+
+  /// No description provided for @warehouseAndInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Warehouse & Inventory'**
+  String get warehouseAndInventory;
+
+  /// No description provided for @availableQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Quantity'**
+  String get availableQuantity;
+
+  /// No description provided for @inventoryValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory Value'**
+  String get inventoryValue;
+
+  /// No description provided for @fullDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Details'**
+  String get fullDetails;
 }
 
 class _AppLocalizationsDelegate

@@ -177,7 +177,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saveLabel => 'توفير';
 
   @override
-  String get scanAnother => 'صور مره ثانيه';
+  String get scanAnother => 'صور مره اخرى';
 
   @override
   String get searchProducts => 'البحث في المنتجات';
@@ -240,7 +240,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get searchByID => 'البحث بالرقم';
 
   @override
-  String get enterProductID => 'أدخل رقم المنتج (مثال: 250-10-0001-01-00002)';
+  String get enterProductID => 'أدخل رقم المنتج';
 
   @override
   String get tryTheseIDs => 'جرب هذه الأرقام لاختبار الاداء:';
@@ -252,7 +252,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editQuantity => 'تعديل الكميه';
 
   @override
-  String get editQuantityAdmin => 'تعديل الكمية (ادمن)';
+  String get editQuantityAdmin => 'تعديل الكمية (للمسؤول)';
 
   @override
   String get newQuantity => 'الكمية الجديدة';
@@ -268,19 +268,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quantityUpdateHelper =>
-      'أدخل الكمية الجديدة لهذا المنتج. سيؤدي هذا إلى تحديث المخزون فوراً.';
+      'أدخل الكمية الجديدة لهذا المنتج , سيؤدي هذا إلى تحديث المخزون فوراً.';
 
   @override
   String get update => 'تحديث';
 
   @override
-  String get enterValidQuantity => 'يرجى إدخال كمية صحيحة (0 أو أكثر)';
+  String get enterValidQuantity => 'يرجى إدخال كمية الحاليه';
 
   @override
   String get quantityUpdated => '✅ تم تحديث الكمية!';
 
   @override
-  String get inventoryUpdatedSuccess => 'تم تحديث المخزون بنجاح';
+  String get inventoryUpdatedSuccess => '✅ تم تحديث المخزون بنجاح';
 
   @override
   String get updateFailed => '❌ فشل التحديث';
@@ -314,4 +314,51 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get off => 'خصم';
+
+  @override
+  String get searchingForProduct => 'جاري البحث عن المنتج...';
+
+  @override
+  String get enterProductIdToSearch => 'أدخل معرف المنتج للبحث';
+
+  @override
+  String get scanBarcodeOrType =>
+      'امسح الرمز الشريطي أو اكتب معرف المنتج يدوياً';
+
+  @override
+  String get enterProductIdInstruction =>
+      'أدخل معرف المنتج أو امسح الرمز الشريطي لعرض معلومات المنتج التفصيلية';
+
+  @override
+  String get currentPrice => 'السعر الحالي';
+
+  @override
+  String get originalPrice => 'السعر الأصلي';
+
+  @override
+  String get notSpecified => 'غير محدد';
+
+  @override
+  String get discountAmount => 'مبلغ الخصم';
+
+  @override
+  String get discountPercentage => 'نسبة الخصم';
+
+  @override
+  String get stockQuantity => 'كمية المخزون';
+
+  @override
+  String get totalValue => 'القيمة الإجمالية';
+
+  @override
+  String get warehouseAndInventory => 'المخزن والمخزون';
+
+  @override
+  String get availableQuantity => 'الكمية المتاحة';
+
+  @override
+  String get inventoryValue => 'قيمة المخزون';
+
+  @override
+  String get fullDetails => 'التفاصيل الكاملة';
 }

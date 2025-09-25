@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Product> _recentSearches = [];
 
-  // ✅ Add these variables to store loaded user data
+  // Variables to store loaded user data
   String? _currentWorkerName;
   String? _currentWorkerEmail;
   bool _isLoadingUserData = true;
@@ -37,24 +37,27 @@ class _HomeScreenState extends State<HomeScreen> {
     _initializeUserData();
   }
 
-  // ✅ New method to load user data
+  // FIX 1: Better parameter handling with immediate priority check
   Future<void> _initializeUserData() async {
     try {
-      // Use passed parameters first, then fallback to SharedPreferences
+      // FIXED: Check parameters first BEFORE any async operations
       if (widget.workerName != null && widget.workerEmail != null) {
+        print('🔵 Using passed parameters - Name: ${widget.workerName}, Email: ${widget.workerEmail}');
         setState(() {
           _currentWorkerName = widget.workerName;
           _currentWorkerEmail = widget.workerEmail;
           _isLoadingUserData = false;
         });
-        print('🔵 Using passed parameters - Name: $_currentWorkerName, Email: $_currentWorkerEmail');
-        return;
+        return; // Exit early, don't load from SharedPreferences
       }
 
-      // Load from SharedPreferences if no parameters passed
+      // Only load from SharedPreferences if NO parameters were provided
+      print('🔍 No parameters provided, loading from SharedPreferences...');
       final prefs = await SharedPreferences.getInstance();
       final storedName = prefs.getString('workerName');
       final storedEmail = prefs.getString('workerEmail');
+
+      print('🔵 Loaded from SharedPreferences - Name: $storedName, Email: $storedEmail');
 
       setState(() {
         _currentWorkerName = storedName;
@@ -62,9 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _isLoadingUserData = false;
       });
 
-      print('🔵 Loaded from SharedPreferences - Name: $_currentWorkerName, Email: $_currentWorkerEmail');
     } catch (e) {
       print('❌ Error loading user data: $e');
+      // FIX 2: Better fallback handling
       setState(() {
         _currentWorkerName = widget.workerName ?? 'Worker';
         _currentWorkerEmail = widget.workerEmail;
@@ -79,19 +82,27 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  // ✅ Updated method to use current user data
   Widget _getSelectedPage() {
     switch (_selectedIndex) {
       case 0:
         return _buildHomeContent();
       case 1:
-        return const BarcodeScannerScreen();
+        return BarcodeScannerScreen(
+          onBackToHome: () {
+            setState(() {
+              _selectedIndex = 0;
+            });
+          },
+          onProductScanned: () {
+            print('Product scanned');
+          },
+        );
       case 2:
         return const AdvancedSearchScreen();
       case 3:
         return ProfileScreen(
-          workerName: _currentWorkerName, // ✅ Use loaded data
-          workerEmail: _currentWorkerEmail, // ✅ Use loaded data
+          workerName: _currentWorkerName,
+          workerEmail: _currentWorkerEmail,
         );
       default:
         return _buildHomeContent();
@@ -101,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHomeContent() {
     final l10n = AppLocalizations.of(context)!;
 
-    // ✅ Show loading indicator while loading user data
+    // Show loading indicator while loading user data
     if (_isLoadingUserData) {
       return const Center(
         child: CircularProgressIndicator(
@@ -129,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: const TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Text(
-                        _currentWorkerName ?? 'Worker', // ✅ Use loaded data
+                        _currentWorkerName ?? 'Worker',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -140,18 +151,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Row(
                     children: [
-                      // Profile avatar
+                      // FIX 3: Better profile avatar with explicit text widget
                       GestureDetector(
-                        onTap: () => setState(
-                              () => _selectedIndex = 3,
-                        ), // Go to profile tab
+                        onTap: () => setState(() => _selectedIndex = 3),
                         child: CircleAvatar(
                           backgroundColor: const Color(0xFFFF4B4B),
                           child: Text(
-                            _getInitials(_currentWorkerName ?? 'W'), // ✅ Use loaded data
+                            _getInitials(_currentWorkerName ?? 'W'),
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16, // Added explicit font size
                             ),
                           ),
                         ),
@@ -167,8 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomSearchBar(
                 hintText: l10n.searchHint,
-                onTap: () =>
-                    setState(() => _selectedIndex = 2), // Go to search tab
+                onTap: () => setState(() => _selectedIndex = 2),
               ),
             ),
 
@@ -197,9 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: l10n.scanProduct,
                           subtitle: l10n.quickScan,
                           color: const Color(0xFFFF4B4B),
-                          onTap: () => setState(
-                                () => _selectedIndex = 1,
-                          ), // Go to scanner tab
+                          onTap: () => setState(() => _selectedIndex = 1),
                         ),
                       ),
                       const SizedBox(width: 15),
@@ -272,8 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const CategoryProductsScreen(
+                                builder: (context) => const CategoryProductsScreen(
                                   category: 'All',
                                 ),
                               ),
@@ -287,8 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const CategoryProductsScreen(
+                                builder: (context) => const CategoryProductsScreen(
                                   category: 'Furniture',
                                 ),
                               ),
@@ -302,8 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const CategoryProductsScreen(
+                                builder: (context) => const CategoryProductsScreen(
                                   category: 'Carpets',
                                 ),
                               ),
@@ -317,8 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const CategoryProductsScreen(
+                                builder: (context) => const CategoryProductsScreen(
                                   category: 'Linens',
                                 ),
                               ),
@@ -332,8 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                const CategoryProductsScreen(
+                                builder: (context) => const CategoryProductsScreen(
                                   category: 'General',
                                 ),
                               ),
@@ -375,8 +377,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              const CategoryProductsScreen(
+                              builder: (context) => const CategoryProductsScreen(
                                 category: 'Carpets',
                               ),
                             ),
@@ -391,8 +392,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              const CategoryProductsScreen(
+                              builder: (context) => const CategoryProductsScreen(
                                 category: 'Furniture',
                               ),
                             ),
@@ -407,8 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              const CategoryProductsScreen(
+                              builder: (context) => const CategoryProductsScreen(
                                 category: 'Linens',
                               ),
                             ),
@@ -426,13 +425,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Get initials from name for avatar
+  // FIX 4: Enhanced initials generation with better error handling
   String _getInitials(String name) {
+    if (name.isEmpty) return 'W'; // Default fallback
+
     List<String> nameParts = name.trim().split(' ');
+    nameParts = nameParts.where((part) => part.isNotEmpty).toList(); // Remove empty parts
+
     if (nameParts.length >= 2) {
+      // Two or more names: use first letter of first two
       return '${nameParts[0][0]}${nameParts[1][0]}'.toUpperCase();
+    } else if (nameParts.isNotEmpty) {
+      // Single name: use first letter
+      return nameParts[0][0].toUpperCase();
     }
-    return nameParts[0][0].toUpperCase();
+
+    return 'W'; // Ultimate fallback
   }
 
   @override
