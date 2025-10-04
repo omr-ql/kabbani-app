@@ -1,9 +1,8 @@
 {
   "@@locale": "ar",
   "welcomeBack": "اهلا و سهلا",
-  "signInToAccount": "سجل الدحول من هنا",
+  "signInToAccount": "سجل الدخول من هنا",
   "emailAddress": "البريد الإلكتروني",
-  "password": "كلمة المرور",
   "rememberMe": "تذكرني",
   "signIn": "تسجيل الدخول",
   "signUp": "قم بانشاء حساب",
@@ -15,8 +14,6 @@
   "agreeTerms": "أوافق على الشروط والأحكام وسياسة الخصوصية",
   "alreadyHaveAccount": "لديك حساب بالفعل؟ ",
   "profile": "الملف الشخصي",
-  "name": "الاسم",
-  "email": "البريد الإلكتروني",
   "language": "اللغة",
   "arabic": "العربية",
   "english": "English",
@@ -69,7 +66,7 @@
   "sortPriceHigh": "السعر: من الغالي إلى الرخيص",
   "sortDiscount": "الخصم",
   "applyFilters": "تطبيق المرشحات",
-  "clear" : "حذف",
+  "clear": "حذف",
   "scanProductCode": "امسح رمز المنتج",
   "cameraPermissionRequired": "نريد اذن الكاميرا لو سمحت",
   "grantPermission": "منح الإذن",
@@ -78,13 +75,13 @@
   "enterCodeManually": "أدخل الرمز يدوياً",
   "searchByID": "البحث بالرقم",
   "enterProductID": "أدخل رقم المنتج",
-  "tryTheseIDs": "جرب هذه الأرقام لاختبار الاداء:" ,
+  "tryTheseIDs": "جرب هذه الأرقام لاختبار الاداء:",
   "editQuantity": "تعديل الكميه",
   "editQuantityAdmin": "تعديل الكمية (للمسؤول)",
   "newQuantity": "الكمية الجديدة",
   "current": "الحالية",
   "units": "وحدة",
-  "enterQuantityHint": "ادخل الكميه الحاليه :" ,
+  "enterQuantityHint": "ادخل الكميه الحاليه :",
   "quantityUpdateHelper": "أدخل الكمية الجديدة لهذا المنتج , سيؤدي هذا إلى تحديث المخزون فوراً.",
   "update": "تحديث",
   "enterValidQuantity": "يرجى إدخال كمية الحاليه",
@@ -101,7 +98,7 @@
   "sector": "القطاع",
   "stock": "المخزون",
   "off": "خصم",
-  "retry": "إعادة المحاولة" ,
+  "retry": "إعادة المحاولة",
   "searchingForProduct": "جاري البحث عن المنتج...",
   "enterProductIdToSearch": "أدخل معرف المنتج للبحث",
   "scanBarcodeOrType": "امسح الرمز الشريطي أو اكتب معرف المنتج يدوياً",
@@ -114,7 +111,163 @@
   "stockQuantity": "كمية المخزون",
   "totalValue": "القيمة الإجمالية",
   "warehouseAndInventory": "المخزن والمخزون",
-  "availableQuantity": "الكمية المتاحة",
+  "availableQuantitynow": "الكمية المتاحة",
   "inventoryValue": "قيمة المخزون",
-  "fullDetails": "التفاصيل الكاملة"
+  "fullDetails": "التفاصيل الكاملة",
+  "reserveProduct": "احجز المنتج",
+  "reserveThisProduct": "احجز هذا المنتج",
+  "reservationCreated": "تم إنشاء الحجز!",
+  "reservationConfirmed": "تم تأكيد حجزك",
+  "myReservations": "حجوزاتي",
+  "reservations": "الحجوزات",
+  "noReservationsYet": "لا توجد حجوزات بعد",
+  "yourReservationsAppearHere": "ستظهر حجوزات منتجاتك هنا",
+  "copied": "تم النسخ إلى الحافظة",
+  "customerName": "اسم العميل",
+  "yourName": "اسمك",
+  "enterYourName": "أدخل اسمك",
+  "phoneNumber": "رقم الهاتف",
+  "enterPhoneNumber": "أدخل رقم الهاتف",
+  "pleaseEnterPhone": "الرجاء إدخال رقم هاتفك",
+  "quantity": "الكمية",
+  "availableQuantity": "متوفر: {count}",
+  "@availableQuantity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "enterQuantity": "أدخل الكمية",
+  "pleaseEnterQuantity": "الرجاء إدخال الكمية",
+  "notEnoughStock": "لا يوجد مخزون كافٍ",
+  "pickupDate": "تاريخ الاستلام",
+  "pickupTime": "وقت الاستلام",
+  "pickup": "يسلم في",
+  "selectDate": "اختر التاريخ",
+  "selectTime": "اختر الوقت",
+  "select": "اختر",
+  "pleaseSelectDateTime": "الرجاء اختيار التاريخ والوقت",
+  "notes": "ملاحظات",
+  "notesOptional": "ملاحظات (اختياري)",
+  "anySpecialRequests": "أي طلبات خاصة؟",
+  "confirmReservation": "تأكيد الحجز",
+  "cancelReservation": "إلغاء الحجز",
+  "cancelReservationQuestion": "إلغاء الحجز؟",
+  "sureToCancel": "هل أنت متأكد من إلغاء هذا الحجز؟ سيتم استعادة المخزون.",
+  "reservationCancelled": "تم إلغاء الحجز بنجاح",
+  "stockRestored": "تم استعادة المخزون",
+  "markAsFulfilled": "وضع علامة مكتمل",
+  "markedAsFulfilled": "تم وضع علامة على الحجز كمكتمل",
+  "active": "نشط",
+  "fulfilled": "مكتمل",
+  "pastDue": "منتهي",
+  "done": "تم",
+  "past": "سابق",
+  "activeReservations": "الحجوزات النشطة ({count})",
+  "@activeReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fulfilledReservations": "الحجوزات المكتملة ({count})",
+  "@fulfilledReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allReservations": "جميع الحجوزات ({count})",
+  "@allReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noActiveReservations": "لا توجد حجوزات نشطة",
+  "noFulfilledReservations": "لا توجد حجوزات مكتملة",
+  "reservedOn": "تم الحجز بتاريخ: {date}",
+  "@reservedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "contact": "جهة الاتصال",
+  "customer": "العميل",
+  "viewManageReservations": "عرض وإدارة حجوزات منتجاتك",
+  "failedToCreateReservation": "فشل في إنشاء الحجز",
+  "failedToLoadReservations": "فشل في تحميل الحجوزات",
+  "failedToCancelReservation": "فشل في إلغاء الحجز",
+  "failedToFulfillReservation": "فشل في وضع علامة على الحجز",
+  "loading": "جاري التحميل...",
+  "yes": "نعم",
+  "no": "لا",
+  "notEnoughQuantityTitle": "مخزون غير كافٍ",
+  "notEnoughQuantityMessage": "لا توجد كمية كافية! المتاح: {available}، المطلوب: {requested}",
+  "@notEnoughQuantityMessage": {
+    "placeholders": {
+      "available": {"type": "int"},
+      "requested": {"type": "int"}
+    }
+  },
+  "errorNoInternet": "لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة والمحاولة مرة أخرى.",
+  "errorTimeout": "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.",
+  "errorConnection": "فشل الاتصال. يرجى التحقق من اتصال الإنترنت.",
+  "errorNetwork": "حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.",
+  "errorServerError": "حدث خطأ في الخادم. يرجى المحاولة لاحقاً.",
+  "errorNotFound": "المعلومات المطلوبة غير موجودة.",
+  "errorUnauthorized": "مطلوب مصادقة. يرجى تسجيل الدخول مرة أخرى.",
+  "errorForbidden": "ليس لديك صلاحية للقيام بهذا الإجراء.",
+  "errorBadRequest": "طلب غير صالح. يرجى التحقق من المدخلات.",
+  "errorConflict": "حدث تعارض في البيانات. يرجى التحديث والمحاولة مرة أخرى.",
+  "errorBadGateway": "الخادم غير متاح مؤقتاً. يرجى المحاولة مرة أخرى.",
+  "errorServiceUnavailable": "الخدمة غير متاحة مؤقتاً. يرجى المحاولة لاحقاً.",
+  "errorGatewayTimeout": "انتهت مهلة استجابة الخادم. يرجى المحاولة مرة أخرى.",
+  "errorClientError": "حدث خطأ في الطلب. يرجى المحاولة مرة أخرى.",
+  "errorInvalidResponse": "استجابة غير صالحة من الخادم. يرجى المحاولة مرة أخرى.",
+  "errorGeneric": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "errorNotAuthenticated": "يرجى تسجيل الدخول للمتابعة.",
+  "errorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
+  "errorUserExists": "يوجد حساب بهذا البريد الإلكتروني بالفعل.",
+  "errorProductNotFound": "المنتج غير موجود. يرجى التحقق من معرف المنتج.",
+  "errorInsufficientStock": "لا يوجد مخزون كافٍ متاح لهذا الطلب.",
+  "successLogin": "تم تسجيل الدخول بنجاح! مرحباً بك.",
+  "successSignup": "تم إنشاء الحساب بنجاح! مرحباً بك!",
+  "successLogout": "تم تسجيل الخروج بنجاح.",
+  "successReservationCreated": "تم إنشاء الحجز بنجاح!",
+  "successReservationCancelled": "تم إلغاء الحجز بنجاح.",
+  "successReservationFulfilled": "تم وضع علامة على الحجز كمنجز.",
+  "successQuantityUpdated": "تم تحديث كمية المنتج بنجاح.",
+  "successGeneric": "تمت العملية بنجاح!",
+  "tryAgainLater": "يرجى المحاولة مرة أخرى لاحقاً.",
+  "checkConnection": "يرجى التحقق من اتصال الإنترنت.",
+  "contactSupport": "إذا استمرت المشكلة، يرجى الاتصال بالدعم.",
+  "pleaseEnterEmail": "يرجى إدخال البريد الإلكتروني",
+  "pleaseEnterPassword": "يرجى إدخال كلمة المرور" ,
+  "close": "إغلاق",
+  "ok": "موافق",
+  "error": "خطأ",
+  "success": "نجاح",
+  "login": "تسجيل الدخول",
+  "signup": "إنشاء حساب",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "name": "الاسم",
+  "pleaseEnterName": "يرجى إدخال الاسم",
+  "validationEmailRequired": "البريد الإلكتروني مطلوب",
+  "validationEmailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+  "validationPasswordRequired": "كلمة المرور مطلوبة",
+  "validationPasswordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+  "validationPasswordLettersNumbers": "يجب أن تحتوي كلمة المرور على حروف وأرقام",
+  "validationNameRequired": "الاسم الكامل مطلوب",
+  "validationNameMinLength": "يجب أن يكون الاسم حرفين على الأقل",
+  "validationConfirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+  "validationPasswordsNotMatch": "كلمات المرور غير متطابقة",
+  "validationAgreeToTerms": "يرجى الموافقة على الشروط والأحكام"
 }

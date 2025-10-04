@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../../models/product.dart';
 import '../../services/api_service.dart';
@@ -7,7 +8,8 @@ import '../products/product_details_screen.dart';
 class SearchByIdScreen extends StatefulWidget {
   final Function(Product?)? onSearchPerformed;
   final VoidCallback? onBackToHome;
-  const SearchByIdScreen({Key? key, this.onSearchPerformed, this.onBackToHome}) : super(key: key);
+  const SearchByIdScreen({Key? key, this.onSearchPerformed, this.onBackToHome})
+    : super(key: key);
 
   @override
   State<SearchByIdScreen> createState() => _SearchByIdScreenState();
@@ -153,13 +155,21 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 gradient: const LinearGradient(
-                                  colors: [Color(0xFFFF4B4B), Color(0xFFFF6B6B)],
+                                  colors: [
+                                    Color(0xFFFF4B4B),
+                                    Color(0xFFFF6B6B),
+                                  ],
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Icon(Icons.arrow_forward, color: Colors.white, size: 20),
+                              child: const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                             ),
-                            onPressed: () => _searchProduct(_searchController.text),
+                            onPressed: () =>
+                                _searchProduct(_searchController.text),
                           ),
                         ],
                       ),
@@ -246,7 +256,10 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFF4B4B).withOpacity(0.2),
                           borderRadius: BorderRadius.circular(12),
@@ -263,9 +276,14 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                       const Spacer(),
                       if (_searchResult!.category.isNotEmpty)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
-                            color: _getCategoryColor(_searchResult!.category).withOpacity(0.2),
+                            color: _getCategoryColor(
+                              _searchResult!.category,
+                            ).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -321,7 +339,10 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                             children: [
                               Text(
                                 l10n.originalPrice, // Localized
-                                style: const TextStyle(color: Colors.grey, fontSize: 14),
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -334,7 +355,10 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                               ),
                               Container(
                                 margin: const EdgeInsets.only(top: 4),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.green[800],
                                   borderRadius: BorderRadius.circular(8),
@@ -360,7 +384,8 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
             const SizedBox(height: 16),
 
             // Warehouse & Inventory Information (if available)
-            if (_searchResult!.warehouseName != null && _searchResult!.warehouseName!.isNotEmpty)
+            if (_searchResult!.warehouseName != null &&
+                _searchResult!.warehouseName!.isNotEmpty)
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
@@ -373,7 +398,11 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.warehouse, color: Colors.orange[300], size: 20),
+                        Icon(
+                          Icons.warehouse,
+                          color: Colors.orange[300],
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           l10n.warehouseAndInventory, // Localized
@@ -387,17 +416,32 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    if (_searchResult!.warehouseName != null && _searchResult!.warehouseName!.isNotEmpty)
-                      _buildInfoRow(l10n, l10n.warehouse, _searchResult!.warehouseName!),
+                    if (_searchResult!.warehouseName != null &&
+                        _searchResult!.warehouseName!.isNotEmpty)
+                      _buildInfoRow(
+                        l10n,
+                        l10n.warehouse,
+                        _searchResult!.warehouseName!,
+                      ),
 
-                    if (_searchResult!.sector != null && _searchResult!.sector!.isNotEmpty)
+                    if (_searchResult!.sector != null &&
+                        _searchResult!.sector!.isNotEmpty)
                       _buildInfoRow(l10n, l10n.sector, _searchResult!.sector!),
 
                     if (_searchResult!.currentQuantity != null)
-                      _buildInfoRow(l10n, l10n.availableQuantity, _searchResult!.currentQuantity.toString()),
+                      _buildInfoRow(
+                        l10n,
+                        l10n.availableQuantitynow,
+                        _searchResult!.currentQuantity.toString(),
+                      ),
 
-                    if (_searchResult!.totalValue != null && _searchResult!.totalValue! > 0)
-                      _buildInfoRow(l10n, l10n.inventoryValue, '\$${_searchResult!.totalValue!.toStringAsFixed(2)}'),
+                    if (_searchResult!.totalValue != null &&
+                        _searchResult!.totalValue! > 0)
+                      _buildInfoRow(
+                        l10n,
+                        l10n.inventoryValue,
+                        '\$${_searchResult!.totalValue!.toStringAsFixed(2)}',
+                      ),
                   ],
                 ),
               ),
@@ -435,7 +479,10 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[700],
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -487,10 +534,7 @@ class _SearchByIdScreenState extends State<SearchByIdScreen> {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ],

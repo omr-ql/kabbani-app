@@ -1,15 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../../models/product.dart';
 import '../../services/api_service.dart';
 import '../home/home_screen.dart';
-import 'dart:async';
+import '../reservations/reservation_dialog.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final String productId;
 
-  const ProductDetailsScreen({Key? key, required this.productId}) : super(key: key);
+  const ProductDetailsScreen({Key? key, required this.productId})
+    : super(key: key);
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -39,7 +43,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       print('🔍 DEBUG: Token exists: ${token != null}');
       print('🔍 DEBUG: User role from prefs: $userRole');
 
-      // Simple role check - no API call needed
       final isAdmin = (token != null && userRole == 'admin');
 
       setState(() {
@@ -48,7 +51,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       });
 
       print('🔍 DEBUG: Final _isAdmin value: $_isAdmin');
-
     } catch (e) {
       print('❌ DEBUG: Error checking admin status: $e');
       setState(() {
@@ -82,6 +84,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
+  // NEW METHOD: Show Reservation Dialog
+  Future<void> _showReservationDialog() async {
+    if (_product == null) return;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => ReservationDialog(
+        productId: _product!.id,
+        productName: _product!.name,
+        availableQuantity: _product!.currentQuantity,
+      ),
+    );
+
+    // If reservation was successful, reload the product to show updated stock
+    if (result == true) {
+      _loadProduct();
+    }
+  }
+
   Future<void> _showEditQuantityDialog() async {
     if (_product == null || !_isAdmin || _userToken == null) return;
 
@@ -94,13 +115,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.grey[900],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Row(
             children: [
               Icon(Icons.admin_panel_settings, color: Colors.orange, size: 24),
               SizedBox(width: 8),
               Text(
-                l10n.editQuantity, // Localized
+                l10n.editQuantity,
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ],
@@ -110,7 +133,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Product Info
                 Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -131,25 +153,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       SizedBox(height: 4),
                       if (_product!.warehouseName.isNotEmpty)
                         Text(
-                          '${l10n.warehouse}: ${_product!.warehouseName}', // Localized
-                          style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                          '${l10n.warehouse}: ${_product!.warehouseName}',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 12,
+                          ),
                         ),
                       SizedBox(height: 8),
                       Row(
                         children: [
                           Text(
-                            '${l10n.current}: ', // Localized
+                            '${l10n.current}: ',
                             style: TextStyle(color: Colors.grey[400]),
                           ),
                           Text(
                             '${_product!.currentQuantity}',
                             style: TextStyle(
-                              color: _product!.currentQuantity == 0 ? Colors.red : Colors.white,
+                              color: _product!.currentQuantity == 0
+                                  ? Colors.red
+                                  : Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            ' ${l10n.units}', // Localized
+                            ' ${l10n.units}',
                             style: TextStyle(color: Colors.grey[400]),
                           ),
                         ],
@@ -158,11 +185,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-
-                // New Quantity Input
                 Text(
-                  '${l10n.newQuantity}:', // Localized
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  '${l10n.newQuantity}:',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(height: 8),
                 TextField(
@@ -176,20 +204,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: Color(0xFFFF4B4B), width: 2),
+                      borderSide: BorderSide(
+                        color: Color(0xFFFF4B4B),
+                        width: 2,
+                      ),
                     ),
                     filled: true,
                     fillColor: Colors.grey[800],
-                    hintText: l10n.enterQuantityHint, // Localized
+                    hintText: l10n.enterQuantityHint,
                     hintStyle: TextStyle(color: Colors.grey[400]),
                     prefixIcon: Icon(Icons.inventory, color: Colors.grey[400]),
                   ),
                 ),
                 SizedBox(height: 12),
-
-                // Helper text
                 Text(
-                  l10n.quantityUpdateHelper, // Localized
+                  l10n.quantityUpdateHelper,
                   style: TextStyle(color: Colors.grey[400], fontSize: 12),
                 ),
               ],
@@ -198,7 +227,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(l10n.cancel, style: TextStyle(color: Colors.grey)), // Localized
+              child: Text(l10n.cancel, style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -208,7 +237,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 if (newQuantity == null || newQuantity < 0) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(l10n.enterValidQuantity), // Localized
+                      content: Text(l10n.enterValidQuantity),
                       backgroundColor: Colors.red,
                     ),
                   );
@@ -220,9 +249,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFFFF4B4B),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: Text(l10n.update, style: TextStyle(color: Colors.white)), // Localized
+              child: Text(l10n.update, style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -230,7 +261,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  // Beautiful success animation
   void _showSuccessAnimation(int newQuantity) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -259,7 +289,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Success icon with animation
               Container(
                 width: 80,
                 height: 80,
@@ -275,7 +304,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                l10n.quantityUpdated, // Localized
+                l10n.quantityUpdated,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -290,7 +319,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '${_product!.currentQuantity} ← $newQuantity ${l10n.units}', // Localized
+                  '${_product!.currentQuantity} → $newQuantity ${l10n.units}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -300,7 +329,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               SizedBox(height: 16),
               Text(
-                l10n.inventoryUpdatedSuccess, // Localized
+                l10n.inventoryUpdatedSuccess,
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.9),
                   fontSize: 14,
@@ -313,7 +342,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
 
-    // Auto-close after 2 seconds
     Timer(Duration(seconds: 2), () {
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
@@ -321,7 +349,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     });
   }
 
-  // Beautiful error message
   void _showErrorMessage(String message) {
     final l10n = AppLocalizations.of(context)!;
 
@@ -350,14 +377,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.error_outline,
-                size: 60,
-                color: Colors.white,
-              ),
+              Icon(Icons.error_outline, size: 60, color: Colors.white),
               SizedBox(height: 16),
               Text(
-                l10n.updateFailed, // Localized
+                l10n.updateFailed,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -380,7 +403,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.red[600],
                 ),
-                child: Text(l10n.tryAgain), // Localized
+                child: Text(l10n.tryAgain),
               ),
             ],
           ),
@@ -394,7 +417,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     final l10n = AppLocalizations.of(context)!;
 
-    // Show beautiful loading dialog
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -416,7 +438,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Animated loading icon
               Container(
                 width: 60,
                 height: 60,
@@ -427,7 +448,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                l10n.updatingInventory, // Localized
+                l10n.updatingInventory,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -436,11 +457,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               SizedBox(height: 8),
               Text(
-                l10n.pleaseWaitUpdating, // Localized
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 14,
-                ),
+                l10n.pleaseWaitUpdating,
+                style: TextStyle(color: Colors.grey[400], fontSize: 14),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -456,28 +474,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         quantity: newQuantity,
       );
 
-      Navigator.pop(context); // Close loading dialog
+      Navigator.pop(context);
 
       if (result['success']) {
-        // Show beautiful success message
         _showSuccessAnimation(newQuantity);
-
-        // Reload product to get updated data
         await _loadProduct();
-
       } else {
         _showErrorMessage(result['message']);
       }
-
     } catch (e) {
-      Navigator.pop(context); // Close loading dialog
-      _showErrorMessage('${l10n.failedToUpdate}: $e'); // Localized
+      Navigator.pop(context);
+      _showErrorMessage('${l10n.failedToUpdate}: $e');
     }
   }
 
   Future<void> _navigateToHome() async {
     try {
-      // Get user data from SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       final workerName = prefs.getString('workerName');
       final workerEmail = prefs.getString('workerEmail');
@@ -488,16 +500,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(
-              workerName: workerName,
-              workerEmail: workerEmail,
-            ),
+            builder: (context) =>
+                HomeScreen(workerName: workerName, workerEmail: workerEmail),
           ),
         );
       }
     } catch (e) {
       print('❌ Error navigating to home: $e');
-      // Fallback navigation without user data
       if (mounted) {
         Navigator.pushReplacement(
           context,
@@ -507,7 +516,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  // Helper function to get localized category names
   String _getLocalizedCategory(String category, AppLocalizations l10n) {
     switch (category.toLowerCase()) {
       case 'furniture':
@@ -523,12 +531,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  // Helper function to format currency
   String _formatCurrency(double amount) {
     return '\$${amount.toStringAsFixed(2)}';
   }
 
-  // Helper function to get stock status color
   Color _getStockStatusColor() {
     if (!_product!.inStock) return Colors.red;
     if (_product!.currentQuantity <= 5) return Colors.orange;
@@ -540,7 +546,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    // Debug print in build method
     print('🔍 DEBUG: Building UI - _isAdmin: $_isAdmin');
 
     return Scaffold(
@@ -565,10 +570,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(
-          color: Color(0xFFFF4B4B),
-        ),
-      )
+              child: CircularProgressIndicator(color: Color(0xFFFF4B4B)),
+            )
           : _errorMessage.isNotEmpty
           ? _buildErrorView(l10n)
           : _buildProductView(l10n),
@@ -594,7 +597,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ElevatedButton.icon(
                 onPressed: _loadProduct,
                 icon: const Icon(Icons.refresh),
-                label: Text(l10n.retry ?? l10n.tryAgain), // Localized
+                label: Text(l10n.retry ?? l10n.tryAgain),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF4B4B),
                 ),
@@ -603,7 +606,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               OutlinedButton.icon(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back),
-                label: Text(l10n.goBack), // Localized
+                label: Text(l10n.goBack),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white),
@@ -625,7 +628,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          // Success indicator
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -649,7 +651,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           const SizedBox(height: 30),
 
-          // Main product details card
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -666,9 +667,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product ID badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFFFF4B4B).withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
@@ -676,7 +679,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.qr_code, color: Color(0xFFFF4B4B), size: 20),
+                      const Icon(
+                        Icons.qr_code,
+                        color: Color(0xFFFF4B4B),
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         '${l10n.idLabel}: ${_product!.id}',
@@ -690,7 +697,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Product name
                 Text(
                   l10n.productNameLabel,
                   style: TextStyle(color: Colors.grey[400], fontSize: 14),
@@ -706,13 +712,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Stock Section with Admin Edit Button (REMOVED STOCK STATUS BADGE)
+                // UPDATED: Stock Section with Both Admin Edit and Customer Reserve buttons
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: _getStockStatusColor().withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: _getStockStatusColor().withOpacity(0.3)),
+                    border: Border.all(
+                      color: _getStockStatusColor().withOpacity(0.3),
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -725,7 +733,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            '${l10n.stock}: ${_product!.currentQuantity} ${l10n.units}', // Localized
+                            '${l10n.stock}: ${_product!.currentQuantity} ${l10n.units}',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -735,7 +743,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ],
                       ),
 
-                      // Admin Edit Button - This is where it should appear!
+                      // Admin Edit Button
                       if (_isAdmin) ...[
                         const SizedBox(height: 16),
                         SizedBox(
@@ -743,9 +751,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: ElevatedButton.icon(
                             onPressed: _showEditQuantityDialog,
                             icon: Icon(Icons.edit, size: 20),
-                            label: Text(l10n.editQuantityAdmin, style: TextStyle(fontWeight: FontWeight.bold)), // Localized
+                            label: Text(
+                              l10n.editQuantityAdmin,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+
+                      // NEW: Customer Reserve Button (non-admin users only)
+                      if (_product!.currentQuantity > 0) ...[
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: _showReservationDialog,
+                            icon: Icon(Icons.event_available, size: 20),
+                            label: Text(
+                              l10n.reserveThisProduct, // This should show the localized text
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
                               foregroundColor: Colors.white,
                               padding: EdgeInsets.symmetric(vertical: 12),
                               shape: RoundedRectangleBorder(
@@ -761,7 +796,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 const SizedBox(height: 20),
 
-                // Warehouse info (if available)
                 if (_product!.warehouseName.isNotEmpty) ...[
                   Container(
                     padding: const EdgeInsets.all(16),
@@ -774,10 +808,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.warehouse, color: Color(0xFFFF4B4B), size: 20),
+                            const Icon(
+                              Icons.warehouse,
+                              color: Color(0xFFFF4B4B),
+                              size: 20,
+                            ),
                             const SizedBox(width: 8),
                             Text(
-                              l10n.warehouseInformation, // Localized
+                              l10n.warehouseInformation,
                               style: const TextStyle(
                                 color: Color(0xFFFF4B4B),
                                 fontWeight: FontWeight.bold,
@@ -800,7 +838,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Category and Sector
                 Row(
                   children: [
                     Expanded(
@@ -809,11 +846,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.category, color: Colors.grey[400], size: 16),
+                              Icon(
+                                Icons.category,
+                                color: Colors.grey[400],
+                                size: 16,
+                              ),
                               const SizedBox(width: 4),
                               Text(
-                                l10n.category, // Localized
-                                style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                                l10n.category,
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -836,11 +880,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.business, color: Colors.grey[400], size: 16),
+                                Icon(
+                                  Icons.business,
+                                  color: Colors.grey[400],
+                                  size: 16,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
-                                  l10n.sector, // Localized
-                                  style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                                  l10n.sector,
+                                  style: TextStyle(
+                                    color: Colors.grey[400],
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
@@ -860,7 +911,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const SizedBox(height: 30),
 
-                // Pricing section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -870,7 +920,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           Text(
                             l10n.priceLabel,
-                            style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                            style: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 14,
+                            ),
                           ),
                           const SizedBox(height: 5),
                           Text(
@@ -891,7 +944,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           children: [
                             Text(
                               l10n.originalPriceLabel,
-                              style: TextStyle(color: Colors.grey[400], fontSize: 14),
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 14,
+                              ),
                             ),
                             const SizedBox(height: 5),
                             Text(
@@ -908,12 +964,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ),
 
-                // Discount section
                 if (_product!.hasDiscount) ...[
                   const SizedBox(height: 20),
                   Center(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.green[800],
                         borderRadius: BorderRadius.circular(20),
@@ -932,7 +990,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           if (_product!.discount > 0) ...[
                             const SizedBox(height: 4),
                             Text(
-                              '${_product!.discount.toStringAsFixed(1)}% ${l10n.off}', // Localized
+                              '${_product!.discount.toStringAsFixed(1)}% ${l10n.off}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
@@ -950,7 +1008,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
           const SizedBox(height: 30),
 
-          // Action buttons
           Row(
             children: [
               Expanded(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../l10n/app_localizations.dart';
-import 'signup_screen.dart';
 import '../../services/api_service.dart';
+import '../../utils/message_helper.dart';
 import '../home/home_screen.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
   bool _rememberMe = false;
 
-  // Focus nodes for better UX
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
 
@@ -34,38 +35,38 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  // Email validation regex
   bool _isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-  // ✅ Save login state to SharedPreferences
-  Future<void> _saveLoginState(String userName, String userEmail, String token, String role) async {
+  Future<void> _saveLoginState(
+    String userName,
+    String userEmail,
+    String token,
+    String role,
+  ) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
       await prefs.setString('workerName', userName);
       await prefs.setString('workerEmail', userEmail);
-
-      // ✅ THESE ARE THE MISSING LINES:
       await prefs.setString('user_token', token);
       await prefs.setString('user_role', role);
 
-      print('✅ Login state saved - Name: $userName, Email: $userEmail, Role: $role');
+      print(
+        '✅ Login state saved - Name: $userName, Email: $userEmail, Role: $role',
+      );
     } catch (e) {
       print('❌ Error saving login state: $e');
     }
   }
 
-  // Handle login process with persistent state
   void _handleLogin() async {
     final l10n = AppLocalizations.of(context)!;
     print('🔵 Starting login process...');
 
-    // Dismiss keyboard
     FocusScope.of(context).unfocus();
 
-    // Validate form
     if (!_formKey.currentState!.validate()) {
       print('❌ Form validation failed');
       return;
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     print('✅ Form validation passed');
     print('📧 Email: ${_emailController.text.trim()}');
-    print('🔒 Password length: ${_passwordController.text.length}');
+    print('🔑 Password length: ${_passwordController.text.length}');
 
     setState(() => _isLoading = true);
 
@@ -91,81 +92,47 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result['success'] == true) {
           print('✅ Login successful!');
 
-          // Get user data
           final userData = result['user'];
           final userName = userData?['name'] ?? 'User';
           final userEmail = userData?['email'] ?? _emailController.text.trim();
-
-          // ✅ GET TOKEN AND ROLE:
           final userToken = userData?['token'] ?? '';
           final userRole = userData?['role'] ?? 'user';
 
           print('👤 User name extracted: $userName');
           print('📧 User email extracted: $userEmail');
-          print('🔑 User token extracted: ${userToken.isNotEmpty ? 'YES' : 'NO'}');
+          print(
+            '🔑 User token extracted: ${userToken.isNotEmpty ? 'YES' : 'NO'}',
+          );
           print('👑 User role extracted: $userRole');
 
-          // ✅ Save login state with token and role
           await _saveLoginState(userName, userEmail, userToken, userRole);
 
-          // Success message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Welcome back, $userName! Role: $userRole',
-                style: const TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 2),
-            ),
-          );
+          MessageHelper.showMessage(context, 'successLogin', isError: false);
 
           print('🚀 Navigating to HomeScreen...');
 
-          // Navigate to home screen with user data
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(
-                workerName: userName,
-                workerEmail: userEmail,
-              ),
-            ),
+          Future.delayed(const Duration(milliseconds: 800), () {
+            if (mounted) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      HomeScreen(workerName: userName, workerEmail: userEmail),
+                ),
                 (route) => false,
-          );
-        }else {
+              );
+            }
+          });
+        } else {
           print('❌ Login failed: ${result['message']}');
-
-          // Show error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                result['message'] ?? 'Login failed. Please try again.',
-                style: const TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-              duration: const Duration(seconds: 4),
-            ),
-          );
+          MessageHelper.showApiResponse(context, result);
         }
       }
     } catch (e) {
       print('💥 Login error caught: $e');
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Network error: Please check your connection and try again.',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 4),
-          ),
-        );
+        MessageHelper.showMessage(context, 'errorConnection', isError: true);
       }
     } finally {
       if (mounted) {
@@ -174,7 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Quick test login for debugging
   void _testLogin() {
     print('🧪 Using test credentials');
     _emailController.text = 'admin@homefurnishing.com';
@@ -198,7 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SizedBox(height: 60),
 
-                // Logo/Icon
                 Center(
                   child: Hero(
                     tag: 'app_logo',
@@ -227,7 +192,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 40),
 
-                // Title
                 Center(
                   child: Text(
                     l10n.welcomeBack,
@@ -244,17 +208,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Text(
                     l10n.signInToAccount,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
+                    style: const TextStyle(color: Colors.grey, fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                 ),
 
                 const SizedBox(height: 48),
 
-                // Email Field
                 TextFormField(
                   controller: _emailController,
                   focusNode: _emailFocusNode,
@@ -265,7 +225,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     labelText: l10n.emailAddress,
                     labelStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
+                    prefixIcon: const Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey,
+                    ),
                     filled: true,
                     fillColor: Colors.grey[900],
                     border: OutlineInputBorder(
@@ -274,7 +237,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFFF4B4B), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFF4B4B),
+                        width: 2,
+                      ),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -287,10 +253,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Email is required';
+                      return l10n.validationEmailRequired;
                     }
                     if (!_isValidEmail(value.trim())) {
-                      return 'Please enter a valid email address';
+                      return l10n.validationEmailInvalid;
                     }
                     return null;
                   },
@@ -298,7 +264,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                // Password Field
                 TextFormField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
@@ -309,10 +274,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     labelText: l10n.password,
                     labelStyle: const TextStyle(color: Colors.grey),
-                    prefixIcon: const Icon(Icons.lock_outlined, color: Colors.grey),
+                    prefixIcon: const Icon(
+                      Icons.lock_outlined,
+                      color: Colors.grey,
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _obscurePassword
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: Colors.grey,
                       ),
                       onPressed: () {
@@ -329,7 +299,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFFF4B4B), width: 2),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFFF4B4B),
+                        width: 2,
+                      ),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -342,10 +315,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Password is required';
+                      return l10n.validationPasswordRequired;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters long';
+                      return l10n.validationPasswordMinLength;
                     }
                     return null;
                   },
@@ -353,7 +326,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                // Remember me & Forgot password
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -381,7 +353,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 32),
 
-                // Login Button
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -397,28 +368,27 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: _isLoading
                         ? const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
                         : Text(
-                      l10n.signIn,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                            l10n.signIn,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
 
                 const SizedBox(height: 24),
 
-                // Debug section (remove in production)
-                if (false) // Set to false in production
+                if (false)
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -473,14 +443,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 16),
 
-                // OR Divider
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: 1,
-                        color: Colors.grey[700],
-                      ),
+                      child: Container(height: 1, color: Colors.grey[700]),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -493,17 +459,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        height: 1,
-                        color: Colors.grey[700],
-                      ),
+                      child: Container(height: 1, color: Colors.grey[700]),
                     ),
                   ],
                 ),
 
                 const SizedBox(height: 32),
 
-                // Signup Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -516,7 +478,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
-                          print('🔄 Navigating to signup screen...');
+                          print('📄 Navigating to signup screen...');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -525,7 +487,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           child: Text(
                             l10n.signUp,
                             style: const TextStyle(

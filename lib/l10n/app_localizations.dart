@@ -782,11 +782,11 @@ abstract class AppLocalizations {
   /// **'Warehouse & Inventory'**
   String get warehouseAndInventory;
 
-  /// No description provided for @availableQuantity.
+  /// No description provided for @availableQuantitynow.
   ///
   /// In en, this message translates to:
   /// **'Available Quantity'**
-  String get availableQuantity;
+  String get availableQuantitynow;
 
   /// No description provided for @inventoryValue.
   ///
@@ -799,6 +799,666 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full Details'**
   String get fullDetails;
+
+  /// No description provided for @reserveProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve Product'**
+  String get reserveProduct;
+
+  /// No description provided for @reserveThisProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserve This Product'**
+  String get reserveThisProduct;
+
+  /// No description provided for @reservationCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation Created!'**
+  String get reservationCreated;
+
+  /// No description provided for @reservationConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reservation has been confirmed'**
+  String get reservationConfirmed;
+
+  /// No description provided for @myReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'My Reservations'**
+  String get myReservations;
+
+  /// No description provided for @reservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservations'**
+  String get reservations;
+
+  /// No description provided for @noReservationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reservations yet'**
+  String get noReservationsYet;
+
+  /// No description provided for @yourReservationsAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Your product reservations will appear here'**
+  String get yourReservationsAppearHere;
+
+  /// No description provided for @customerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get customerName;
+
+  /// No description provided for @yourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Name'**
+  String get yourName;
+
+  /// No description provided for @enterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterYourName;
+
+  /// No description provided for @pleaseEnterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get pleaseEnterName;
+
+  /// No description provided for @copied.
+  ///
+  /// In en, this message translates to:
+  /// **'copied to clipboard'**
+  String get copied;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @enterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number'**
+  String get enterPhoneNumber;
+
+  /// No description provided for @pleaseEnterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get pleaseEnterPhone;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @availableQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'متوفر: {count}'**
+  String availableQuantity(int count);
+
+  /// No description provided for @enterQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter quantity'**
+  String get enterQuantity;
+
+  /// No description provided for @pleaseEnterQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter quantity'**
+  String get pleaseEnterQuantity;
+
+  /// No description provided for @notEnoughStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough stock available'**
+  String get notEnoughStock;
+
+  /// No description provided for @pickupDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Date'**
+  String get pickupDate;
+
+  /// No description provided for @pickupTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Time'**
+  String get pickupTime;
+
+  /// No description provided for @pickup.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get pickup;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
+  /// No description provided for @selectTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Select time'**
+  String get selectTime;
+
+  /// No description provided for @select.
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get select;
+
+  /// No description provided for @pleaseSelectDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select pickup date and time'**
+  String get pleaseSelectDateTime;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @notesOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (Optional)'**
+  String get notesOptional;
+
+  /// No description provided for @anySpecialRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Any special requests?'**
+  String get anySpecialRequests;
+
+  /// No description provided for @confirmReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Reservation'**
+  String get confirmReservation;
+
+  /// No description provided for @cancelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reservation'**
+  String get cancelReservation;
+
+  /// No description provided for @cancelReservationQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reservation?'**
+  String get cancelReservationQuestion;
+
+  /// No description provided for @sureToCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this reservation? Stock will be restored.'**
+  String get sureToCancel;
+
+  /// No description provided for @reservationCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation cancelled successfully'**
+  String get reservationCancelled;
+
+  /// No description provided for @stockRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock restored'**
+  String get stockRestored;
+
+  /// No description provided for @markAsFulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Fulfilled'**
+  String get markAsFulfilled;
+
+  /// No description provided for @markedAsFulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation marked as fulfilled'**
+  String get markedAsFulfilled;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @fulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled'**
+  String get fulfilled;
+
+  /// No description provided for @pastDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Past Due'**
+  String get pastDue;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get past;
+
+  /// No description provided for @activeReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Active ({count})'**
+  String activeReservations(int count);
+
+  /// No description provided for @fulfilledReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Fulfilled ({count})'**
+  String fulfilledReservations(int count);
+
+  /// No description provided for @allReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'All ({count})'**
+  String allReservations(int count);
+
+  /// No description provided for @noActiveReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'No active reservations'**
+  String get noActiveReservations;
+
+  /// No description provided for @noFulfilledReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'No fulfilled reservations'**
+  String get noFulfilledReservations;
+
+  /// No description provided for @reservedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Reserved {date}'**
+  String reservedOn(String date);
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @viewManageReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage your product reservations'**
+  String get viewManageReservations;
+
+  /// No description provided for @failedToCreateReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create reservation'**
+  String get failedToCreateReservation;
+
+  /// No description provided for @failedToLoadReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load reservations'**
+  String get failedToLoadReservations;
+
+  /// No description provided for @failedToCancelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to cancel reservation'**
+  String get failedToCancelReservation;
+
+  /// No description provided for @failedToFulfillReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to fulfill reservation'**
+  String get failedToFulfillReservation;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @notEnoughQuantityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Enough Stock'**
+  String get notEnoughQuantityTitle;
+
+  /// No description provided for @notEnoughQuantityMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'There isn\'t enough quantity! Available: {available}, Requested: {requested}'**
+  String notEnoughQuantityMessage(int available, int requested);
+
+  /// No description provided for @validationEmailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get validationEmailRequired;
+
+  /// No description provided for @validationEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get validationEmailInvalid;
+
+  /// No description provided for @validationPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get validationPasswordRequired;
+
+  /// No description provided for @validationPasswordMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters long'**
+  String get validationPasswordMinLength;
+
+  /// No description provided for @validationPasswordLettersNumbers.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain both letters and numbers'**
+  String get validationPasswordLettersNumbers;
+
+  /// No description provided for @validationNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name is required'**
+  String get validationNameRequired;
+
+  /// No description provided for @validationNameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters long'**
+  String get validationNameMinLength;
+
+  /// No description provided for @validationConfirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get validationConfirmPasswordRequired;
+
+  /// No description provided for @validationPasswordsNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get validationPasswordsNotMatch;
+
+  /// No description provided for @validationAgreeToTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Please agree to the Terms and Conditions'**
+  String get validationAgreeToTerms;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @signup.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signup;
+
+  /// No description provided for @errorNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network and try again.'**
+  String get errorNoInternet;
+
+  /// No description provided for @errorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The request timed out. Please try again.'**
+  String get errorTimeout;
+
+  /// No description provided for @errorConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection failed. Please check your internet connection.'**
+  String get errorConnection;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'A network error occurred. Please try again.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorServerError.
+  ///
+  /// In en, this message translates to:
+  /// **'A server error occurred. Please try again later.'**
+  String get errorServerError;
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested information was not found.'**
+  String get errorNotFound;
+
+  /// No description provided for @errorUnauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication required. Please log in again.'**
+  String get errorUnauthorized;
+
+  /// No description provided for @errorForbidden.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get errorForbidden;
+
+  /// No description provided for @errorBadRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid request. Please check the inputs.'**
+  String get errorBadRequest;
+
+  /// No description provided for @errorConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'A data conflict occurred. Please refresh and try again.'**
+  String get errorConflict;
+
+  /// No description provided for @errorBadGateway.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is temporarily unavailable. Please try again.'**
+  String get errorBadGateway;
+
+  /// No description provided for @errorServiceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is temporarily unavailable. Please try again later.'**
+  String get errorServiceUnavailable;
+
+  /// No description provided for @errorGatewayTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not respond in time. Please try again.'**
+  String get errorGatewayTimeout;
+
+  /// No description provided for @errorClientError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred with the request. Please try again.'**
+  String get errorClientError;
+
+  /// No description provided for @errorInvalidResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid response from the server. Please try again.'**
+  String get errorInvalidResponse;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorGeneric;
+
+  /// No description provided for @errorNotAuthenticated.
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in to continue.'**
+  String get errorNotAuthenticated;
+
+  /// No description provided for @errorInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password. Please try again.'**
+  String get errorInvalidCredentials;
+
+  /// No description provided for @errorUserExists.
+  ///
+  /// In en, this message translates to:
+  /// **'An account with this email already exists.'**
+  String get errorUserExists;
+
+  /// No description provided for @errorProductNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Product not found. Please check the product ID.'**
+  String get errorProductNotFound;
+
+  /// No description provided for @errorInsufficientStock.
+  ///
+  /// In en, this message translates to:
+  /// **'There is not enough stock available for this order.'**
+  String get errorInsufficientStock;
+
+  /// No description provided for @successLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Login successful! Welcome back.'**
+  String get successLogin;
+
+  /// No description provided for @successSignup.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully! Welcome!'**
+  String get successSignup;
+
+  /// No description provided for @successLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'You have been logged out successfully.'**
+  String get successLogout;
+
+  /// No description provided for @successReservationCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation created successfully!'**
+  String get successReservationCreated;
+
+  /// No description provided for @successReservationCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation cancelled successfully.'**
+  String get successReservationCancelled;
+
+  /// No description provided for @successReservationFulfilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation has been marked as fulfilled.'**
+  String get successReservationFulfilled;
+
+  /// No description provided for @successQuantityUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Product quantity updated successfully.'**
+  String get successQuantityUpdated;
+
+  /// No description provided for @successGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation completed successfully!'**
+  String get successGeneric;
+
+  /// No description provided for @tryAgainLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again later.'**
+  String get tryAgainLater;
+
+  /// No description provided for @checkConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your internet connection.'**
+  String get checkConnection;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'If the problem persists, please contact support.'**
+  String get contactSupport;
 }
 
 class _AppLocalizationsDelegate

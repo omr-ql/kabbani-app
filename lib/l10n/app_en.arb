@@ -114,7 +114,172 @@
   "stockQuantity": "Stock Quantity",
   "totalValue": "Total Value",
   "warehouseAndInventory": "Warehouse & Inventory",
-  "availableQuantity": "Available Quantity",
+  "availableQuantitynow": "Available Quantity",
   "inventoryValue": "Inventory Value",
-  "fullDetails": "Full Details"
+  "fullDetails": "Full Details" ,
+  "reserveProduct": "Reserve Product",
+  "reserveThisProduct": "Reserve This Product",
+  "reservationCreated": "Reservation Created!",
+  "reservationConfirmed": "Your reservation has been confirmed",
+  "myReservations": "My Reservations",
+  "reservations": "Reservations",
+  "noReservationsYet": "No reservations yet",
+  "yourReservationsAppearHere": "Your product reservations will appear here",
+
+  "customerName": "Customer Name",
+  "yourName": "Your Name",
+  "enterYourName": "Enter your name",
+  "pleaseEnterName": "Please enter your name",
+  "copied": "copied to clipboard",
+  "phoneNumber": "Phone Number",
+  "enterPhoneNumber": "Enter phone number",
+  "pleaseEnterPhone": "Please enter your phone number",
+
+  "quantity": "Quantity",
+  "availableQuantity": "متوفر: {count}",
+  "@availableQuantity": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "enterQuantity": "Enter quantity",
+  "pleaseEnterQuantity": "Please enter quantity",
+  "notEnoughStock": "Not enough stock available",
+
+  "pickupDate": "Pickup Date",
+  "pickupTime": "Pickup Time",
+  "pickup": "Pickup",
+  "selectDate": "Select date",
+  "selectTime": "Select time",
+  "select": "Select",
+  "pleaseSelectDateTime": "Please select pickup date and time",
+
+  "notes": "Notes",
+  "notesOptional": "Notes (Optional)",
+  "anySpecialRequests": "Any special requests?",
+
+  "confirmReservation": "Confirm Reservation",
+  "cancelReservation": "Cancel Reservation",
+  "cancelReservationQuestion": "Cancel Reservation?",
+  "sureToCancel": "Are you sure you want to cancel this reservation? Stock will be restored.",
+  "reservationCancelled": "Reservation cancelled successfully",
+  "stockRestored": "Stock restored",
+
+  "markAsFulfilled": "Mark as Fulfilled",
+  "markedAsFulfilled": "Reservation marked as fulfilled",
+
+  "active": "Active",
+  "fulfilled": "Fulfilled",
+  "pastDue": "Past Due",
+  "done": "Done",
+  "past": "Past",
+
+  "activeReservations": "Active ({count})",
+  "@activeReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "fulfilledReservations": "Fulfilled ({count})",
+  "@fulfilledReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "allReservations": "All ({count})",
+  "@allReservations": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "noActiveReservations": "No active reservations",
+  "noFulfilledReservations": "No fulfilled reservations",
+
+  "reservedOn": "Reserved {date}",
+  "@reservedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+
+  "contact": "Contact",
+  "customer": "Customer",
+
+  "viewManageReservations": "View and manage your product reservations",
+
+  "failedToCreateReservation": "Failed to create reservation",
+  "failedToLoadReservations": "Failed to load reservations",
+  "failedToCancelReservation": "Failed to cancel reservation",
+  "failedToFulfillReservation": "Failed to fulfill reservation",
+
+  "error": "Error",
+  "success": "Success",
+  "loading": "Loading...",
+  "close": "Close",
+  "yes": "Yes",
+  "no": "No" ,
+  "notEnoughQuantityTitle": "Not Enough Stock",
+  "notEnoughQuantityMessage": "There isn't enough quantity! Available: {available}, Requested: {requested}",
+  "@notEnoughQuantityMessage": {
+    "placeholders": {
+      "available": {"type": "int"},
+      "requested": {"type": "int"}
+    }
+  },
+  "validationEmailRequired": "Email is required",
+  "validationEmailInvalid": "Please enter a valid email address",
+  "validationPasswordRequired": "Password is required",
+  "validationPasswordMinLength": "Password must be at least 6 characters long",
+  "validationPasswordLettersNumbers": "Password must contain both letters and numbers",
+  "validationNameRequired": "Full name is required",
+  "validationNameMinLength": "Name must be at least 2 characters long",
+  "validationConfirmPasswordRequired": "Please confirm your password",
+  "validationPasswordsNotMatch": "Passwords do not match",
+  "validationAgreeToTerms": "Please agree to the Terms and Conditions" ,
+  "ok": "OK",
+  "login": "Login",
+  "signup": "Sign Up",
+  "errorNoInternet": "No internet connection. Please check your network and try again.",
+  "errorTimeout": "The request timed out. Please try again.",
+  "errorConnection": "Connection failed. Please check your internet connection.",
+  "errorNetwork": "A network error occurred. Please try again.",
+  "errorServerError": "A server error occurred. Please try again later.",
+  "errorNotFound": "The requested information was not found.",
+  "errorUnauthorized": "Authentication required. Please log in again.",
+  "errorForbidden": "You do not have permission to perform this action.",
+  "errorBadRequest": "Invalid request. Please check the inputs.",
+  "errorConflict": "A data conflict occurred. Please refresh and try again.",
+  "errorBadGateway": "The server is temporarily unavailable. Please try again.",
+  "errorServiceUnavailable": "The service is temporarily unavailable. Please try again later.",
+  "errorGatewayTimeout": "The server did not respond in time. Please try again.",
+  "errorClientError": "An error occurred with the request. Please try again.",
+  "errorInvalidResponse": "Invalid response from the server. Please try again.",
+  "errorGeneric": "Something went wrong. Please try again.",
+  "errorNotAuthenticated": "Please log in to continue.",
+  "errorInvalidCredentials": "Incorrect email or password. Please try again.",
+  "errorUserExists": "An account with this email already exists.",
+  "errorProductNotFound": "Product not found. Please check the product ID.",
+  "errorInsufficientStock": "There is not enough stock available for this order.",
+  "successLogin": "Login successful! Welcome back.",
+  "successSignup": "Account created successfully! Welcome!",
+  "successLogout": "You have been logged out successfully.",
+  "successReservationCreated": "Reservation created successfully!",
+  "successReservationCancelled": "Reservation cancelled successfully.",
+  "successReservationFulfilled": "Reservation has been marked as fulfilled.",
+  "successQuantityUpdated": "Product quantity updated successfully.",
+  "successGeneric": "Operation completed successfully!",
+  "tryAgainLater": "Please try again later.",
+  "checkConnection": "Please check your internet connection.",
+  "contactSupport": "If the problem persists, please contact support."
 }

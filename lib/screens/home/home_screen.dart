@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../../models/product.dart';
 import '../../widgets/custom_widgets.dart';
+import '../products/all_products_screen.dart';
+import '../products/category_products_screen.dart';
 import '../profile/profile_screen.dart';
+import '../reservations/admin_reservations_widget.dart'; // NEW IMPORT
 import '../search/advanced_search_screen.dart';
 import '../search/barcode_scanner_screen.dart';
 import '../search/search_by_id_screen.dart';
-import '../products/all_products_screen.dart';
-import '../products/category_products_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? workerName;
   final String? workerEmail;
 
   const HomeScreen({Key? key, this.workerName, this.workerEmail})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,48 +28,67 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Product> _recentSearches = [];
 
-  // Variables to store loaded user data
   String? _currentWorkerName;
   String? _currentWorkerEmail;
   bool _isLoadingUserData = true;
+  bool _isAdmin = false; // NEW: Admin status flag
 
   @override
   void initState() {
     super.initState();
     _initializeUserData();
+    _checkAdminStatus(); // NEW: Check admin status
   }
 
-  // FIX 1: Better parameter handling with immediate priority check
+  // NEW: Check if user is admin
+  Future<void> _checkAdminStatus() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userRole = prefs.getString('user_role');
+
+      setState(() {
+        _isAdmin = (userRole == 'admin');
+      });
+
+      print('🔍 HomeScreen - User is admin: $_isAdmin, Role: $userRole');
+    } catch (e) {
+      print('❌ Error checking admin status: $e');
+      setState(() {
+        _isAdmin = false;
+      });
+    }
+  }
+
   Future<void> _initializeUserData() async {
     try {
-      // FIXED: Check parameters first BEFORE any async operations
       if (widget.workerName != null && widget.workerEmail != null) {
-        print('🔵 Using passed parameters - Name: ${widget.workerName}, Email: ${widget.workerEmail}');
+        print(
+          '🔵 Using passed parameters - Name: ${widget.workerName}, Email: ${widget.workerEmail}',
+        );
         setState(() {
           _currentWorkerName = widget.workerName;
           _currentWorkerEmail = widget.workerEmail;
           _isLoadingUserData = false;
         });
-        return; // Exit early, don't load from SharedPreferences
+        return;
       }
 
-      // Only load from SharedPreferences if NO parameters were provided
       print('🔍 No parameters provided, loading from SharedPreferences...');
       final prefs = await SharedPreferences.getInstance();
       final storedName = prefs.getString('workerName');
       final storedEmail = prefs.getString('workerEmail');
 
-      print('🔵 Loaded from SharedPreferences - Name: $storedName, Email: $storedEmail');
+      print(
+        '🔵 Loaded from SharedPreferences - Name: $storedName, Email: $storedEmail',
+      );
 
       setState(() {
         _currentWorkerName = storedName;
         _currentWorkerEmail = storedEmail;
         _isLoadingUserData = false;
       });
-
     } catch (e) {
       print('❌ Error loading user data: $e');
-      // FIX 2: Better fallback handling
       setState(() {
         _currentWorkerName = widget.workerName ?? 'Worker';
         _currentWorkerEmail = widget.workerEmail;
@@ -112,12 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHomeContent() {
     final l10n = AppLocalizations.of(context)!;
 
-    // Show loading indicator while loading user data
     if (_isLoadingUserData) {
       return const Center(
-        child: CircularProgressIndicator(
-          color: Color(0xFFFF4B4B),
-        ),
+        child: CircularProgressIndicator(color: Color(0xFFFF4B4B)),
       );
     }
 
@@ -137,7 +155,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(
                         l10n.welcomeBackWorker,
-                        style: const TextStyle(color: Colors.grey, fontSize: 16),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
                       ),
                       Text(
                         _currentWorkerName ?? 'Worker',
@@ -151,7 +172,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Row(
                     children: [
-                      // FIX 3: Better profile avatar with explicit text widget
                       GestureDetector(
                         onTap: () => setState(() => _selectedIndex = 3),
                         child: CircleAvatar(
@@ -161,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16, // Added explicit font size
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -279,9 +299,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const CategoryProductsScreen(
-                                  category: 'All',
-                                ),
+                                builder: (context) =>
+                                    const CategoryProductsScreen(
+                                      category: 'All',
+                                    ),
                               ),
                             );
                           },
@@ -293,9 +314,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const CategoryProductsScreen(
-                                  category: 'Furniture',
-                                ),
+                                builder: (context) =>
+                                    const CategoryProductsScreen(
+                                      category: 'Furniture',
+                                    ),
                               ),
                             );
                           },
@@ -307,9 +329,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const CategoryProductsScreen(
-                                  category: 'Carpets',
-                                ),
+                                builder: (context) =>
+                                    const CategoryProductsScreen(
+                                      category: 'Carpets',
+                                    ),
                               ),
                             );
                           },
@@ -321,9 +344,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const CategoryProductsScreen(
-                                  category: 'Linens',
-                                ),
+                                builder: (context) =>
+                                    const CategoryProductsScreen(
+                                      category: 'Linens',
+                                    ),
                               ),
                             );
                           },
@@ -335,9 +359,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const CategoryProductsScreen(
-                                  category: 'General',
-                                ),
+                                builder: (context) =>
+                                    const CategoryProductsScreen(
+                                      category: 'General',
+                                    ),
                               ),
                             );
                           },
@@ -348,6 +373,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            // NEW: Admin Reservations Section (Only visible to admins)
+            if (_isAdmin) ...[
+              const SizedBox(height: 30),
+              const AdminReservationsWidget(),
+            ],
 
             const SizedBox(height: 30),
 
@@ -377,9 +408,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CategoryProductsScreen(
-                                category: 'Carpets',
-                              ),
+                              builder: (context) =>
+                                  const CategoryProductsScreen(
+                                    category: 'Carpets',
+                                  ),
                             ),
                           );
                         },
@@ -392,9 +424,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CategoryProductsScreen(
-                                category: 'Furniture',
-                              ),
+                              builder: (context) =>
+                                  const CategoryProductsScreen(
+                                    category: 'Furniture',
+                                  ),
                             ),
                           );
                         },
@@ -407,9 +440,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CategoryProductsScreen(
-                                category: 'Linens',
-                              ),
+                              builder: (context) =>
+                                  const CategoryProductsScreen(
+                                    category: 'Linens',
+                                  ),
                             ),
                           );
                         },
@@ -425,22 +459,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // FIX 4: Enhanced initials generation with better error handling
   String _getInitials(String name) {
-    if (name.isEmpty) return 'W'; // Default fallback
+    if (name.isEmpty) return 'W';
 
     List<String> nameParts = name.trim().split(' ');
-    nameParts = nameParts.where((part) => part.isNotEmpty).toList(); // Remove empty parts
+    nameParts = nameParts.where((part) => part.isNotEmpty).toList();
 
     if (nameParts.length >= 2) {
-      // Two or more names: use first letter of first two
       return '${nameParts[0][0]}${nameParts[1][0]}'.toUpperCase();
     } else if (nameParts.isNotEmpty) {
-      // Single name: use first letter
       return nameParts[0][0].toUpperCase();
     }
 
-    return 'W'; // Ultimate fallback
+    return 'W';
   }
 
   @override
@@ -461,13 +492,22 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: const Icon(Icons.home), label: l10n.home),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: l10n.home,
+          ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.qr_code_scanner),
             label: l10n.scan,
           ),
-          BottomNavigationBarItem(icon: const Icon(Icons.search), label: l10n.search),
-          BottomNavigationBarItem(icon: const Icon(Icons.person), label: l10n.profile),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.search),
+            label: l10n.search,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person),
+            label: l10n.profile,
+          ),
         ],
       ),
     );

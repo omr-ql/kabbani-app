@@ -12,7 +12,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeBack => 'اهلا و سهلا';
 
   @override
-  String get signInToAccount => 'سجل الدحول من هنا';
+  String get signInToAccount => 'سجل الدخول من هنا';
 
   @override
   String get emailAddress => 'البريد الإلكتروني';
@@ -354,11 +354,364 @@ class AppLocalizationsAr extends AppLocalizations {
   String get warehouseAndInventory => 'المخزن والمخزون';
 
   @override
-  String get availableQuantity => 'الكمية المتاحة';
+  String get availableQuantitynow => 'الكمية المتاحة';
 
   @override
   String get inventoryValue => 'قيمة المخزون';
 
   @override
   String get fullDetails => 'التفاصيل الكاملة';
+
+  @override
+  String get reserveProduct => 'احجز المنتج';
+
+  @override
+  String get reserveThisProduct => 'احجز هذا المنتج';
+
+  @override
+  String get reservationCreated => 'تم إنشاء الحجز!';
+
+  @override
+  String get reservationConfirmed => 'تم تأكيد حجزك';
+
+  @override
+  String get myReservations => 'حجوزاتي';
+
+  @override
+  String get reservations => 'الحجوزات';
+
+  @override
+  String get noReservationsYet => 'لا توجد حجوزات بعد';
+
+  @override
+  String get yourReservationsAppearHere => 'ستظهر حجوزات منتجاتك هنا';
+
+  @override
+  String get customerName => 'اسم العميل';
+
+  @override
+  String get yourName => 'اسمك';
+
+  @override
+  String get enterYourName => 'أدخل اسمك';
+
+  @override
+  String get pleaseEnterName => 'يرجى إدخال الاسم';
+
+  @override
+  String get copied => 'تم النسخ إلى الحافظة';
+
+  @override
+  String get phoneNumber => 'رقم الهاتف';
+
+  @override
+  String get enterPhoneNumber => 'أدخل رقم الهاتف';
+
+  @override
+  String get pleaseEnterPhone => 'الرجاء إدخال رقم هاتفك';
+
+  @override
+  String get quantity => 'الكمية';
+
+  @override
+  String availableQuantity(int count) {
+    return 'متوفر: $count';
+  }
+
+  @override
+  String get enterQuantity => 'أدخل الكمية';
+
+  @override
+  String get pleaseEnterQuantity => 'الرجاء إدخال الكمية';
+
+  @override
+  String get notEnoughStock => 'لا يوجد مخزون كافٍ';
+
+  @override
+  String get pickupDate => 'تاريخ الاستلام';
+
+  @override
+  String get pickupTime => 'وقت الاستلام';
+
+  @override
+  String get pickup => 'يسلم في';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get selectTime => 'اختر الوقت';
+
+  @override
+  String get select => 'اختر';
+
+  @override
+  String get pleaseSelectDateTime => 'الرجاء اختيار التاريخ والوقت';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get notesOptional => 'ملاحظات (اختياري)';
+
+  @override
+  String get anySpecialRequests => 'أي طلبات خاصة؟';
+
+  @override
+  String get confirmReservation => 'تأكيد الحجز';
+
+  @override
+  String get cancelReservation => 'إلغاء الحجز';
+
+  @override
+  String get cancelReservationQuestion => 'إلغاء الحجز؟';
+
+  @override
+  String get sureToCancel =>
+      'هل أنت متأكد من إلغاء هذا الحجز؟ سيتم استعادة المخزون.';
+
+  @override
+  String get reservationCancelled => 'تم إلغاء الحجز بنجاح';
+
+  @override
+  String get stockRestored => 'تم استعادة المخزون';
+
+  @override
+  String get markAsFulfilled => 'وضع علامة مكتمل';
+
+  @override
+  String get markedAsFulfilled => 'تم وضع علامة على الحجز كمكتمل';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get fulfilled => 'مكتمل';
+
+  @override
+  String get pastDue => 'منتهي';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String get past => 'سابق';
+
+  @override
+  String activeReservations(int count) {
+    return 'الحجوزات النشطة ($count)';
+  }
+
+  @override
+  String fulfilledReservations(int count) {
+    return 'الحجوزات المكتملة ($count)';
+  }
+
+  @override
+  String allReservations(int count) {
+    return 'جميع الحجوزات ($count)';
+  }
+
+  @override
+  String get noActiveReservations => 'لا توجد حجوزات نشطة';
+
+  @override
+  String get noFulfilledReservations => 'لا توجد حجوزات مكتملة';
+
+  @override
+  String reservedOn(String date) {
+    return 'تم الحجز بتاريخ: $date';
+  }
+
+  @override
+  String get contact => 'جهة الاتصال';
+
+  @override
+  String get customer => 'العميل';
+
+  @override
+  String get viewManageReservations => 'عرض وإدارة حجوزات منتجاتك';
+
+  @override
+  String get failedToCreateReservation => 'فشل في إنشاء الحجز';
+
+  @override
+  String get failedToLoadReservations => 'فشل في تحميل الحجوزات';
+
+  @override
+  String get failedToCancelReservation => 'فشل في إلغاء الحجز';
+
+  @override
+  String get failedToFulfillReservation => 'فشل في وضع علامة على الحجز';
+
+  @override
+  String get error => 'خطأ';
+
+  @override
+  String get success => 'نجاح';
+
+  @override
+  String get loading => 'جاري التحميل...';
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get no => 'لا';
+
+  @override
+  String get notEnoughQuantityTitle => 'مخزون غير كافٍ';
+
+  @override
+  String notEnoughQuantityMessage(int available, int requested) {
+    return 'لا توجد كمية كافية! المتاح: $available، المطلوب: $requested';
+  }
+
+  @override
+  String get validationEmailRequired => 'البريد الإلكتروني مطلوب';
+
+  @override
+  String get validationEmailInvalid => 'يرجى إدخال عنوان بريد إلكتروني صحيح';
+
+  @override
+  String get validationPasswordRequired => 'كلمة المرور مطلوبة';
+
+  @override
+  String get validationPasswordMinLength =>
+      'يجب أن تكون كلمة المرور 6 أحرف على الأقل';
+
+  @override
+  String get validationPasswordLettersNumbers =>
+      'يجب أن تحتوي كلمة المرور على حروف وأرقام';
+
+  @override
+  String get validationNameRequired => 'الاسم الكامل مطلوب';
+
+  @override
+  String get validationNameMinLength => 'يجب أن يكون الاسم حرفين على الأقل';
+
+  @override
+  String get validationConfirmPasswordRequired => 'يرجى تأكيد كلمة المرور';
+
+  @override
+  String get validationPasswordsNotMatch => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get validationAgreeToTerms => 'يرجى الموافقة على الشروط والأحكام';
+
+  @override
+  String get ok => 'موافق';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get signup => 'إنشاء حساب';
+
+  @override
+  String get errorNoInternet =>
+      'لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة والمحاولة مرة أخرى.';
+
+  @override
+  String get errorTimeout => 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorConnection => 'فشل الاتصال. يرجى التحقق من اتصال الإنترنت.';
+
+  @override
+  String get errorNetwork => 'حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorServerError => 'حدث خطأ في الخادم. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get errorNotFound => 'المعلومات المطلوبة غير موجودة.';
+
+  @override
+  String get errorUnauthorized => 'مطلوب مصادقة. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get errorForbidden => 'ليس لديك صلاحية للقيام بهذا الإجراء.';
+
+  @override
+  String get errorBadRequest => 'طلب غير صالح. يرجى التحقق من المدخلات.';
+
+  @override
+  String get errorConflict =>
+      'حدث تعارض في البيانات. يرجى التحديث والمحاولة مرة أخرى.';
+
+  @override
+  String get errorBadGateway =>
+      'الخادم غير متاح مؤقتاً. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorServiceUnavailable =>
+      'الخدمة غير متاحة مؤقتاً. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get errorGatewayTimeout =>
+      'انتهت مهلة استجابة الخادم. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorClientError => 'حدث خطأ في الطلب. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorInvalidResponse =>
+      'استجابة غير صالحة من الخادم. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorGeneric => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorNotAuthenticated => 'يرجى تسجيل الدخول للمتابعة.';
+
+  @override
+  String get errorInvalidCredentials =>
+      'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorUserExists => 'يوجد حساب بهذا البريد الإلكتروني بالفعل.';
+
+  @override
+  String get errorProductNotFound =>
+      'المنتج غير موجود. يرجى التحقق من معرف المنتج.';
+
+  @override
+  String get errorInsufficientStock => 'لا يوجد مخزون كافٍ متاح لهذا الطلب.';
+
+  @override
+  String get successLogin => 'تم تسجيل الدخول بنجاح! مرحباً بك.';
+
+  @override
+  String get successSignup => 'تم إنشاء الحساب بنجاح! مرحباً بك!';
+
+  @override
+  String get successLogout => 'تم تسجيل الخروج بنجاح.';
+
+  @override
+  String get successReservationCreated => 'تم إنشاء الحجز بنجاح!';
+
+  @override
+  String get successReservationCancelled => 'تم إلغاء الحجز بنجاح.';
+
+  @override
+  String get successReservationFulfilled => 'تم وضع علامة على الحجز كمنجز.';
+
+  @override
+  String get successQuantityUpdated => 'تم تحديث كمية المنتج بنجاح.';
+
+  @override
+  String get successGeneric => 'تمت العملية بنجاح!';
+
+  @override
+  String get tryAgainLater => 'يرجى المحاولة مرة أخرى لاحقاً.';
+
+  @override
+  String get checkConnection => 'يرجى التحقق من اتصال الإنترنت.';
+
+  @override
+  String get contactSupport => 'إذا استمرت المشكلة، يرجى الاتصال بالدعم.';
 }
